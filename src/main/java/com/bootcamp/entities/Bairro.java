@@ -23,5 +23,5 @@ public class Bairro {
         private Municipio municipio;
 
         @Column(name = "STATUS")
-        private int status;
+        private Integer status;
 }

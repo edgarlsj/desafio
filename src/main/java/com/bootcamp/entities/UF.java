@@ -18,7 +18,7 @@ public class UF {
     @Column(name = "NOME")
     private String nome;
     @Column(name = "STATUS")
-    private int status;
+    private Integer status;
 
 
 }

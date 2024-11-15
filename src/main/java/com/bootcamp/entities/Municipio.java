@@ -23,5 +23,5 @@ public class Municipio {
     private UF uf;
 
     @Column(name = "STATUS")
-    private int status;
+    private Integer status;
 }

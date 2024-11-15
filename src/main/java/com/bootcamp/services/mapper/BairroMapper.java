@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class BairroMapper {
 
-    ModelMapper modelMapper;
+
 
 
     public BairroDTO toDto(Bairro bairro) {

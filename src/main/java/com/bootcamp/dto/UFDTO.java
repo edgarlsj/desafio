@@ -11,5 +11,5 @@ public class UFDTO {
     private Long codigoUF;
     private String sigla;
     private String nome;
-    private int status;
+    private Integer status;
 }

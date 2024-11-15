@@ -8,15 +8,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class PessoaMapper {
 
-    ModelMapper modelMapper;
 
-    public PessoaDTO toDTO(Pessoa pessoa) {
-        PessoaDTO pessoaDTO = modelMapper.map(pessoa, PessoaDTO.class);
-        return pessoaDTO;
+    public PessoaDTO toDTO(Pessoa pessoa, boolean isEndereco) {
+        PessoaDTO dto = new PessoaDTO();
+        dto.setCodigoPessoa(pessoa.getCodigoPessoa());
+        dto.setNome(pessoa.getNome());
+        dto.setSobrenome(pessoa.getSobrenome());
+        dto.setIdade(pessoa.getIdade());
+        dto.setLogin(pessoa.getLogin());
+        dto.setSenha(pessoa.getSenha());
+        dto.setStatus(pessoa.getStatus());
+        dto.setEnderecos(pessoa.getEnderecos());
+        return dto;
     }
 
-    public Pessoa toEntity(PessoaDTO dto) {
-        Pessoa pessoa = modelMapper.map(dto, Pessoa.class);
-        return pessoa;
-    }
+
 }

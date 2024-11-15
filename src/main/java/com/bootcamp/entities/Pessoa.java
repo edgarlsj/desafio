@@ -24,7 +24,7 @@ public class Pessoa {
             private String sobrenome;
 
             @Column(name = "IDADE")
-            private int idade;
+            private Integer idade;
 
             @Column(name = "LOGIN")
             private String login;
@@ -33,7 +33,7 @@ public class Pessoa {
             private String senha;
 
             @Column(name = "STATUS")
-            private int status;
+            private Integer status;
 
             @ManyToMany//anotação que indica que a relação é de muitos para muitos
             @JoinTable(name = "PESSOA_BAIRRO", joinColumns = @JoinColumn(name = "CODIGO_PESSOA"),

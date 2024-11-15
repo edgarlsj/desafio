@@ -10,7 +10,7 @@ public class MunicipioDTO {
 
 
     private Long codigoMunicipio;
+    private Long codigoUF;
     private String nome;
-    private UFDTO ufdto;
-    private int status;
+    private Integer status;
 }
