@@ -33,12 +33,12 @@ public class Pessoa {
             private String senha;
 
             @Column(name = "STATUS")
-            private Integer status;
+            private int status;
 
             @ManyToMany//anotação que indica que a relação é de muitos para muitos
             @JoinTable(name = "PESSOA_BAIRRO", joinColumns = @JoinColumn(name = "CODIGO_PESSOA"),
                     inverseJoinColumns = @JoinColumn(name = "CODIGO_BAIRRO"))//anotação que indica a tabela de junção
-            private Set<Bairro> enderecos; //lista de endereços que o pessoa pode ter
+            private List<Bairro> enderecos; //lista de endereços que o pessoa pode ter
 
             
 }

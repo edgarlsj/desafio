@@ -1,6 +1,7 @@
 package com.bootcamp.dto;
 
 import jakarta.persistence.Column;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,4 +13,6 @@ public class UFDTO {
     private String sigla;
     private String nome;
     private Integer status;
+
+
 }

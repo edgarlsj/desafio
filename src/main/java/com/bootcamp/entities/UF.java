@@ -9,7 +9,7 @@ import lombok.*;
 @Data
 public class UF {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "CODIGO_UF")
     private Long codigoUF;
 
@@ -18,7 +18,7 @@ public class UF {
     @Column(name = "NOME")
     private String nome;
     @Column(name = "STATUS")
-    private Integer status;
+    private int status;
 
 
 }

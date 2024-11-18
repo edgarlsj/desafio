@@ -1,4 +1,4 @@
-package com.bootcamp.services.mapper;
+package com.bootcamp.mapper;
 
 import com.bootcamp.dto.UFDTO;
 import com.bootcamp.entities.UF;
@@ -19,21 +19,19 @@ public class UFMapper {
         return ufDTO;
     }
 
+    public UF toEntity(UFDTO dto) {
+        UF uf = new UF();
+
+        if (dto.getCodigoUF() != null) {
+            uf.setCodigoUF(dto.getCodigoUF());
+        }
+        uf.setNome(dto.getNome());
+        uf.setSigla(dto.getSigla());
+        uf.setStatus(dto.getStatus());
+        return uf;
+    }
 
 
 
 
-
-
-//    ModelMapper modelMapper;
-//
-//    public UFDTO toDTO(UF uf) {
-//        UFDTO ufDTO = modelMapper.map(uf, UFDTO.class);
-//        return ufDTO;
-//    }
-//
-//    public UF toEntity(UFDTO dto) {
-//        UF uf = modelMapper.map(dto, UF.class);
-//        return uf;
-//    }
 }

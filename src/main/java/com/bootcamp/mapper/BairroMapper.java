@@ -1,4 +1,4 @@
-package com.bootcamp.services.mapper;
+package com.bootcamp.mapper;
 
 import com.bootcamp.dto.BairroDTO;
 import com.bootcamp.entities.Bairro;

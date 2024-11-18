@@ -3,9 +3,8 @@ package com.bootcamp.services;
 import com.bootcamp.dto.BairroDTO;
 import com.bootcamp.entities.Bairro;
 import com.bootcamp.repositories.BairroRepository;
-import com.bootcamp.services.mapper.BairroMapper;
+import com.bootcamp.mapper.BairroMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -24,6 +24,6 @@ public class PessoaDTO {
     private String login;
     private String senha;
     private Integer status;
-    private Set<Bairro> enderecos = new HashSet<>();
+    private List<Bairro> enderecos ;
 
 }
