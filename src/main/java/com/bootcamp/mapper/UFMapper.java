@@ -2,7 +2,6 @@ package com.bootcamp.mapper;
 
 import com.bootcamp.dto.UFDTO;
 import com.bootcamp.entities.UF;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,6 +29,7 @@ public class UFMapper {
         uf.setStatus(dto.getStatus());
         return uf;
     }
+
 
 
 

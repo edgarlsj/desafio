@@ -3,11 +3,14 @@ package com.bootcamp.mapper;
 import com.bootcamp.dto.MunicipioDTO;
 import com.bootcamp.dto.UFDTO;
 import com.bootcamp.entities.Municipio;
+import com.bootcamp.entities.UF;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MunicipioMapper {
 
+    @Autowired
     UFMapper ufMapper;
 
 
@@ -28,9 +31,9 @@ public class MunicipioMapper {
         if (dto.getCodigoMunicipio() != null) {
             municipio.setCodigoMunicipio(dto.getCodigoMunicipio());
         }
-        municipio.setCodigoMunicipio(dto.getCodigoMunicipio());
         municipio.setNome(dto.getNome());
-//        municipio.setUf(ufMapper.toEntity(new UFDTO(dto.getCodigoUF())));
+        municipio.setStatus(dto.getStatus());
+        municipio.setUf(ufMapper.toEntity(new UFDTO(dto.getCodigoUF(), null, null, 0)));
         return municipio;
     }
 }

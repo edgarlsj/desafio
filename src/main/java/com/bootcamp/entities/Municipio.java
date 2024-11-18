@@ -3,11 +3,15 @@ package com.bootcamp.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "MUNICIPIO")
-@Data
-
+@Getter
+@Setter
+@NoArgsConstructor
 public class Municipio {
 
     @Id

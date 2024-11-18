@@ -1,5 +1,6 @@
 package com.bootcamp.dto;
 
+import com.bootcamp.entities.Municipio;
 import lombok.Getter;
 import lombok.Setter;
 

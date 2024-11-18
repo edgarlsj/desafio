@@ -12,5 +12,6 @@ public class MunicipioDTO {
     private Long codigoMunicipio;
     private Long codigoUF;
     private String nome;
-    private Integer status;
+    private int status;
+
 }

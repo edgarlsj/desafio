@@ -20,7 +20,7 @@ public class BairroService {
     public BairroMapper bairroMapper;
 
 
-        @Transactional
+
         public List<BairroDTO> getAll(Long codigoMunicipio, String nome, Integer status) {
             List<Bairro> bairros = bairroRepository.findAll().stream()
                     .filter(b -> (codigoMunicipio == null || b.getMunicipio().getCodigoMunicipio().equals(codigoMunicipio)) &&
