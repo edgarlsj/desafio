@@ -2,6 +2,7 @@ package com.bootcamp.mapper;
 
 import com.bootcamp.dto.BairroDTO;
 import com.bootcamp.entities.Bairro;
+import com.bootcamp.entities.Municipio;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -20,40 +21,18 @@ public class BairroMapper {
         return dto;
 
 
-//    public BairroDTO toDTO(Bairro bairro) {
-//        BairroDTO bairroDTO = modelMapper.map(bairro, BairroDTO.class);
-//        return bairroDTO;
-//    }
-//
-//    public Bairro toEntity(BairroDTO dto) {
-//        Bairro bairro = modelMapper.map(dto, Bairro.class);
-//        return bairro;
-//    }
+    }
 
+    public Bairro toEntity(BairroDTO dto) {
+        Bairro bairro = new Bairro();
 
-//    public BairroMapper(MunicipioMapper municipioMapper) {
-//        this.municipioMapper = municipioMapper;
-//    }
-//
-//    MunicipioMapper municipioMapper;
-
-//    public BairroDTO toDTO(Bairro bairro) {
-//        BairroDTO dto = new BairroDTO();
-//        dto.setCodigoBairro(bairro.getCodigoBairro());
-//        dto.setNome(bairro.getNome());
-//        dto.setMunicipio(municipioMapper.toDTO(bairro.getCodigoMunicipio()));
-//        return dto;
-//    }
-//
-//    public Bairro toEntity(BairroDTO dto) {
-//        Bairro bairro = new Bairro();
-//        bairro.setCodigoBairro(dto.getCodigoBairro());
-//        bairro.setNome(dto.getNome());
-//        bairro.setCodigoMunicipio(dto.getMunicipio());
-//        bairro.setStatus(dto.getStatus());
-//        return bairro;
-//    }
+        bairro.setCodigoBairro(dto.getCodigoBairro());
+        bairro.setNome(dto.getNome());
+        bairro.setMunicipio(new Municipio(dto.getCodigoMunicipio(), null, null, 0));
+        bairro.setStatus(dto.getStatus());
+        return bairro;
+    }
 
 
     }
-}
+

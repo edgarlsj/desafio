@@ -5,10 +5,7 @@ import com.bootcamp.exceptions.DesafioExceptions;
 import com.bootcamp.services.BairroService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,9 +33,21 @@ public class BairroController {
                 }
 
             } catch (Exception e) {
-                return ResponseEntity.status(404).body("Não foi possível consultar bairro no banco de dados");
+                return ResponseEntity.status(400).body("Não foi possível consultar bairro no banco de dados");
             }
         }
+
+    }
+
+    @PostMapping
+    public ResponseEntity<?> createBairro(@RequestBody BairroDTO bairroDTO) {
+        try {
+            List<BairroDTO> bairro = bairroService.createBairro(bairroDTO);
+            return ResponseEntity.status(200).body(bairro);
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
+
     }
 
 

@@ -2,12 +2,13 @@ package com.bootcamp.entities;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "BAIRRO")
 @Data
-
 public class Bairro {
 
         @Id

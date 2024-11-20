@@ -39,6 +39,14 @@ public class BairroService {
         return bairroMapper.toDto(bairro);
     }
 
+    @Transactional
+    public List<BairroDTO> createBairro(BairroDTO bairroDTO) {
+        Bairro bairro = bairroMapper.toEntity(bairroDTO);
+        bairroRepository.save(bairro);
+        List<BairroDTO> bairrosDTO = getAll(null, null, null);//retona todos os bairros
+        return bairrosDTO;
+    }
+
 
 
 }

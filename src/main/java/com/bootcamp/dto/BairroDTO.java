@@ -12,5 +12,5 @@ public class BairroDTO {
     private Long codigoBairro;
     private Long codigoMunicipio;
     private String nome;
-    private Integer status;
+    private int status;
 }
