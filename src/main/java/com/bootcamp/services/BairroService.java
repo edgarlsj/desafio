@@ -2,6 +2,7 @@ package com.bootcamp.services;
 
 import com.bootcamp.dto.BairroDTO;
 import com.bootcamp.entities.Bairro;
+import com.bootcamp.exceptions.DesafioException;
 import com.bootcamp.repositories.BairroRepository;
 import com.bootcamp.mapper.BairroMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +36,20 @@ public class BairroService {
 
     @Transactional
     public BairroDTO getByCodigoBairro(Long codigoBairro) {
-        Bairro bairro = bairroRepository.findById(codigoBairro).orElse(null);
+        Bairro bairro = bairroRepository.findById(codigoBairro).orElseThrow(() -> new DesafioException("Não foi possível consultar bairro no banco de dados."));
         return bairroMapper.toDto(bairro);
     }
 
     @Transactional
     public List<BairroDTO> createBairro(BairroDTO bairroDTO) {
+        Bairro bairro = bairroMapper.toEntity(bairroDTO);
+        bairroRepository.save(bairro);
+        List<BairroDTO> bairrosDTO = getAll(null, null, null);//retona todos os bairros
+        return bairrosDTO;
+    }
+
+    @Transactional
+    public List<BairroDTO> updateBairro(BairroDTO bairroDTO) {
         Bairro bairro = bairroMapper.toEntity(bairroDTO);
         bairroRepository.save(bairro);
         List<BairroDTO> bairrosDTO = getAll(null, null, null);//retona todos os bairros

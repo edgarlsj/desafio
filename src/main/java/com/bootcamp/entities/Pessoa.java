@@ -1,7 +1,9 @@
 package com.bootcamp.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.Set;
@@ -9,36 +11,37 @@ import java.util.Set;
 @Entity
 @Table(name = "PESSOA")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 
 public class Pessoa {
 
-            @Id
-            @GeneratedValue(strategy = GenerationType.IDENTITY)
-            @Column(name = "CODIGO_PESSOA")
-            private Long codigoPessoa;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "CODIGO_PESSOA")
+    private Long codigoPessoa;
 
-            @Column(name = "NOME")
-            private String nome;
+    @Column(name = "NOME")
+    private String nome;
 
-            @Column(name = "SOBRENOME")
-            private String sobrenome;
+    @Column(name = "SOBRENOME")
+    private String sobrenome;
 
-            @Column(name = "IDADE")
-            private Integer idade;
+    @Column(name = "IDADE")
+    private Integer idade;
 
-            @Column(name = "LOGIN")
-            private String login;
+    @Column(name = "LOGIN")
+    private String login;
 
-            @Column(name = "SENHA")
-            private String senha;
+    @Column(name = "SENHA")
+    private String senha;
 
-            @Column(name = "STATUS")
-            private int status;
+    @Column(name = "STATUS")
+    private int status;
 
-            @ManyToMany//anotação que indica que a relação é de muitos para muitos
-            @JoinTable(name = "PESSOA_BAIRRO", joinColumns = @JoinColumn(name = "CODIGO_PESSOA"),
-                    inverseJoinColumns = @JoinColumn(name = "CODIGO_BAIRRO"))//anotação que indica a tabela de junção
-            private List<Bairro> enderecos; //lista de endereços que o pessoa pode ter
+    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Column(name = "ENDERECO")
+    private List<Endereco> endereco;
 
-            
+
 }

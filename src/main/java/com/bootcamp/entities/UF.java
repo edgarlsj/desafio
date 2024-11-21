@@ -7,6 +7,8 @@ import lombok.*;
 @Entity
 @Table(name = "UF")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class UF {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

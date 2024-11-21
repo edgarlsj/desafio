@@ -3,14 +3,13 @@ package com.bootcamp.controllers;
 
 import com.bootcamp.dto.PessoaDTO;
 import com.bootcamp.dto.UFDTO;
+import com.bootcamp.exceptions.DesafioException;
+import com.bootcamp.exceptions.ErrorResponseDesafio;
 import com.bootcamp.services.PessoaService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -41,11 +40,32 @@ public class PessoaController {
                 return ResponseEntity.status(200).body(pessoas);
             }
 
-        } catch (Exception e) {
+        } catch (DesafioException e) {
             e.printStackTrace();
-            return ResponseEntity.status(400).body("Não foi possível consultar pessoa no banco de dados" );
+            return ResponseEntity.status(404).body(new ErrorResponseDesafio("Não foi possível consultar pessoa no banco de dados", 404));
         }
 
+    }
+
+    @PostMapping
+    public ResponseEntity<?> createPessoa(@RequestBody PessoaDTO pessoaDTO) {
+        try {
+            List<PessoaDTO> pessoa = pessoaService.createPessoa(pessoaDTO);
+            return ResponseEntity.status(200).body(pessoa);
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+
+    }
+
+    @PutMapping
+    public ResponseEntity<?> updatePessoa(@RequestBody PessoaDTO pessoaDTO) {
+        try {
+            List<PessoaDTO> pessoa = pessoaService.updatePessoa(pessoaDTO);
+            return ResponseEntity.status(200).body(pessoa);
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
     }
 
 

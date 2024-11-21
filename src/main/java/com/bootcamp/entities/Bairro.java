@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "BAIRRO")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Bairro {
 
         @Id
@@ -24,5 +26,5 @@ public class Bairro {
         private Municipio municipio;
 
         @Column(name = "STATUS")
-        private int status;
+        private Integer status;
 }

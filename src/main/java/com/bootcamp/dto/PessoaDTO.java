@@ -1,6 +1,7 @@
 package com.bootcamp.dto;
 
 import com.bootcamp.entities.Bairro;
+import com.bootcamp.entities.Endereco;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
@@ -24,6 +25,6 @@ public class PessoaDTO {
     private String login;
     private String senha;
     private Integer status;
-    private List<Bairro> enderecos ;
+    private List<EnderecoDTO> enderecos ;
 
 }

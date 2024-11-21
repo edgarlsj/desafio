@@ -2,6 +2,7 @@ package com.bootcamp.services;
 
 import com.bootcamp.dto.MunicipioDTO;
 import com.bootcamp.entities.Municipio;
+import com.bootcamp.exceptions.DesafioException;
 import com.bootcamp.repositories.MunicipioRepository;
 import com.bootcamp.mapper.MunicipioMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,14 +35,29 @@ public class MunicipioService {
     }
 
     public MunicipioDTO getByCodigoMunicipio(Long codigoMunicipio) {
-        Municipio municipio = municipioRepository.findById(codigoMunicipio).orElse(null);
+        Municipio municipio = municipioRepository.findById(codigoMunicipio).orElseThrow(() -> new DesafioException("Não foi possível consultar municipio no banco de dados."));
         return municipioMapper.toDTO(municipio);
     }
     @Transactional
     public List<MunicipioDTO> createMunicipio(MunicipioDTO municipioDTO) {
+        if (municipioDTO.getNome() == null || municipioDTO.getNome().trim().isEmpty()) {
+            throw new DesafioException("Não foi possível incluir municipio no banco de dados. Motivo: nome não pode ser vazio.");
+        }
+        if (municipioRepository.existsByNome(municipioDTO.getNome())) {
+            throw new DesafioException("Não foi possível incluir municipio no banco de dados. Motivo: já existe um(a) registro com o nome no banco de dados.");
+        }
+
         Municipio municipio = municipioMapper.toEntity(municipioDTO);
          municipioRepository.save(municipio);
          List<MunicipioDTO> municipios = getAll(null, null, null, null);//retona todos os municipios
+        return municipios;
+    }
+
+    @Transactional
+    public List<MunicipioDTO> updateMunicipio(MunicipioDTO municipioDTO) {
+        Municipio municipio = municipioMapper.toEntity(municipioDTO);
+        municipioRepository.save(municipio);
+        List<MunicipioDTO> municipios = getAll(null, null, null, null);//retona todos os municipios
         return municipios;
     }
 

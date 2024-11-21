@@ -2,6 +2,7 @@ package com.bootcamp.services;
 
 import com.bootcamp.dto.UFDTO;
 import com.bootcamp.entities.UF;
+import com.bootcamp.exceptions.DesafioException;
 import com.bootcamp.repositories.UFRepository;
 import com.bootcamp.mapper.UFMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,12 +41,27 @@ public class UFService {
 
 
     public UFDTO getFindById (Long codigoUF){
-        UF uf = ufRepository.findById(codigoUF).orElse(null);
+        UF uf = ufRepository.findById(codigoUF).orElseThrow(() -> new DesafioException("Não foi possível consultar UF no banco de dados."));
         return ufMapper.toDTO(uf);
     }
 
     @Transactional
     public List<UFDTO> create(UFDTO ufDTO){
+        if (ufDTO.getNome() == null || ufDTO.getNome().trim().isEmpty() ||
+                ufDTO.getSigla() == null || ufDTO.getSigla().trim().isEmpty()) {
+            throw new DesafioException("Não foi possível incluir UF no banco de dados. Motivo: sigla ou nome não pode ser vazio.");
+        }
+        if (ufRepository.existsByNome(ufDTO.getNome()) || ufRepository.existsBySigla(ufDTO.getSigla())) {
+            throw new DesafioException("Não foi possível incluir UF no banco de dados. Motivo: já existe um(a) registro com a sigla ou nome no banco de dados.");
+        }
+        UF uf = ufMapper.toEntity(ufDTO);
+        ufRepository.save(uf);
+        List<UFDTO> list = getAll(null, null, null, null);//retorna a lista atualizada
+        return list;
+    }
+
+    @Transactional
+    public List<UFDTO> update(UFDTO ufDTO){
         UF uf = ufMapper.toEntity(ufDTO);
         ufRepository.save(uf);
         List<UFDTO> list = getAll(null, null, null, null);//retorna a lista atualizada

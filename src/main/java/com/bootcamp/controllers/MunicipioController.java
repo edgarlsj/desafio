@@ -3,6 +3,8 @@ package com.bootcamp.controllers;
 
 import com.bootcamp.dto.BairroDTO;
 import com.bootcamp.dto.MunicipioDTO;
+import com.bootcamp.exceptions.DesafioException;
+import com.bootcamp.exceptions.ErrorResponseDesafio;
 import com.bootcamp.services.MunicipioService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -35,9 +37,9 @@ public class MunicipioController {
                 return ResponseEntity.status(200).body(municipios);
             }
 
-        } catch (Exception e) {
+        } catch (DesafioException e) {
             e.printStackTrace();
-            return ResponseEntity.status(400).body("Não foi possível consultar municipio no banco de dados");
+            return ResponseEntity.status(404).body(new ErrorResponseDesafio("Não foi possível consultar municipio no banco de dados", 404));
         }
     }
 
@@ -46,9 +48,23 @@ public class MunicipioController {
         try {
             List<MunicipioDTO> municipio = municipioService.createMunicipio(municipioDTO);
             return ResponseEntity.status(200).body(municipio);
+        } catch (DesafioException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(404).body(new ErrorResponseDesafio(e.getMessage(), 404));
+        }catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(404).body(new ErrorResponseDesafio("Não foi possível criar municipio no banco de dados", 404));
+        }
+    }
+
+    @PutMapping
+    public ResponseEntity<?> updateMunicipio (@RequestBody MunicipioDTO municipioDTO){
+        try {
+            List<MunicipioDTO> municipio = municipioService.updateMunicipio(municipioDTO);
+            return ResponseEntity.status(200).body(municipio);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(400).body("Não foi possível criar municipio");
+            return ResponseEntity.status(404).body("Não foi possível atualizar municipio");
         }
     }
 }
