@@ -65,6 +65,18 @@ public class MunicipioService {
 
     @Transactional
     public List<MunicipioDTO> updateMunicipio(MunicipioDTO municipioDTO) {
+        ValidateUtils.validateNome(municipioDTO.getNome());
+        ValidateUtils.validateStatus(municipioDTO.getStatus());
+
+        if (!municipioRepository.existsByCodigoMunicipio(municipioDTO.getCodigoMunicipio())) {
+            throw new DesafioException("Não foi possível atualizar municipio no banco de dados. Motivo: código do municipio "+municipioDTO.getCodigoMunicipio()+" não foi encontrado!.");
+        }
+        if (!UFRepository.existsByCodigoUF(municipioDTO.getCodigoUF())) {
+            throw new DesafioException("Não foi possível atualizar municipio no banco de dados. Motivo: código do UF "+municipioDTO.getCodigoUF()+" não foi encontrado!.");
+        }
+
+
+
         Municipio municipio = municipioMapper.toEntity(municipioDTO);
         municipioRepository.save(municipio);
         List<MunicipioDTO> municipios = getAll(null, null, null, null);//retona todos os municipios

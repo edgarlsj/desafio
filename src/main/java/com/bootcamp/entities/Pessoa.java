@@ -39,6 +39,7 @@ public class Pessoa {
     @Column(name = "STATUS")
     private int status;
 
+
     @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
     @Column(name = "ENDERECO")
     private List<Endereco> endereco;

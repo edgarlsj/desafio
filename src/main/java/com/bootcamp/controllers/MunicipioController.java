@@ -62,9 +62,9 @@ public class MunicipioController {
         try {
             List<MunicipioDTO> municipio = municipioService.updateMunicipio(municipioDTO);
             return ResponseEntity.status(200).body(municipio);
-        } catch (Exception e) {
+        } catch (DesafioException e) {
             e.printStackTrace();
-            return ResponseEntity.status(404).body("Não foi possível atualizar municipio");
+            return ResponseEntity.status(404).body(new ErrorResponseDesafio(e.getMessage(), 404));
         }
     }
 }

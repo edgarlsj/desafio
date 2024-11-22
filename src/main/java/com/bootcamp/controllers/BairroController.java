@@ -58,8 +58,8 @@ public class BairroController {
         try {
             List<BairroDTO> bairro = bairroService.updateBairro(bairroDTO);
             return ResponseEntity.status(200).body(bairro);
-        } catch (Exception e) {
-            return ResponseEntity.status(404).body(e.getMessage());
+        } catch (DesafioException e) {
+            return ResponseEntity.status(404).body(new ErrorResponseDesafio(e.getMessage(), 404));
         }
     }
 

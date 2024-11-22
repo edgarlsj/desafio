@@ -65,19 +65,16 @@ public class PessoaService {
 
 
         if (pessoaRepository.existsByLogin(pessoaDTO.getLogin())) {
-            throw new DesafioException("Não foi possível incluir pessoa no banco de dados. Motivo: já existe um(a) registro com o login no banco de dados.");
+            throw new DesafioException("Não foi possível incluir pessoa no banco de dados. Motivo: já existe um(a) registro com o login: "+pessoaDTO.getLogin()+" no banco de dados.");
         }
 
         if (pessoaRepository.existsByNome(pessoaDTO.getNome())) {
-            throw new DesafioException("Não foi possível incluir pessoa no banco de dados. Motivo: já existe um(a) registro com o nome no banco de dados.");
+            throw new DesafioException("Não foi possível incluir pessoa no banco de dados. Motivo: já existe um(a) registro com o nome: "+pessoaDTO.getNome()+" no banco de dados.");
         }
 
         if (pessoaRepository.existsBySobrenome(pessoaDTO.getSobrenome())) {
-            throw new DesafioException("Não foi possível incluir pessoa no banco de dados. Motivo: já existe um(a) registro com o sobrenome no banco de dados.");
+            throw new DesafioException("Não foi possível incluir pessoa no banco de dados. Motivo: já existe um(a) registro com o sobrenome: "+pessoaDTO.getSobrenome()+" no banco de dados.");
         }
-
-
-
 
         //converte o DTO para entidade
         Pessoa pessoa = pessoaMapper.toEntity(pessoaDTO);
@@ -100,6 +97,7 @@ public class PessoaService {
 
     @Transactional
     public List<PessoaDTO> updatePessoa(PessoaDTO pessoaDTO) {
+
         Pessoa pessoa = pessoaMapper.toEntity(pessoaDTO);
         pessoaRepository.save(pessoa);
         List<PessoaDTO> pessoas = getAll(null, null, null, null, null, null, null);

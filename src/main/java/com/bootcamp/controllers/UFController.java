@@ -62,7 +62,10 @@ public class UFController {
         try {
             List<UFDTO> uf = ufService.update(ufDTO);
             return ResponseEntity.status(200).body(uf);
-        } catch (Exception e) {
+        } catch (DesafioException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(404).body(new ErrorResponseDesafio(e.getMessage(), 404));
+        }catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(404).body(new ErrorResponseDesafio("Não foi possível atualizar UF no banco de dados", 404));
         }

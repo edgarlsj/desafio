@@ -57,10 +57,10 @@ public class UFService {
         //Valida se já existe um registro com o mesmo nome ou sigla
 
         if (ufRepository.existsByNome(ufDTO.getNome())) {
-            throw new DesafioException("Não foi possível incluir UF no banco de dados. Motivo: já existe um(a) registro com o nome no banco de dados.");
+            throw new DesafioException("Não foi possível incluir UF no banco de dados. Motivo: já existe um(a) registro com o nome "+ufDTO.getNome()+ " no banco de dados.");
         }
         if (ufRepository.existsBySigla(ufDTO.getSigla())) {
-            throw new DesafioException("Não foi possível incluir UF no banco de dados. Motivo: já existe um(a) registro com a sigla no banco de dados.");
+            throw new DesafioException("Não foi possível incluir UF no banco de dados. Motivo: já existe um(a) registro com a sigla "+ufDTO.getSigla()+ " no banco de dados.");
         }
 
 
@@ -72,6 +72,14 @@ public class UFService {
 
     @Transactional
     public List<UFDTO> update(UFDTO ufDTO){
+        ValidateUtils.validateSigla(ufDTO.getSigla());
+        ValidateUtils.validateNome(ufDTO.getNome());
+        ValidateUtils.validateStatus(ufDTO.getStatus());
+
+        if (!ufRepository.existsByCodigoUF(ufDTO.getCodigoUF())) {//verifica se o código da UF existe
+            throw new DesafioException("Não foi possível atualizar UF. Motivo: código da UF " + ufDTO.getCodigoUF() + " não foi encontrado no banco.");
+        }
+
         UF uf = ufMapper.toEntity(ufDTO);
         ufRepository.save(uf);
         List<UFDTO> list = getAll(null, null, null, null);//retorna a lista atualizada

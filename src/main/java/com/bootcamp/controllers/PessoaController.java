@@ -65,8 +65,8 @@ public class PessoaController {
         try {
             List<PessoaDTO> pessoa = pessoaService.updatePessoa(pessoaDTO);
             return ResponseEntity.status(200).body(pessoa);
-        } catch (Exception e) {
-            return ResponseEntity.status(404).body(e.getMessage());
+        } catch (DesafioException e) {
+            return ResponseEntity.status(404).body(new ErrorResponseDesafio("Não foi possível atualizar pessoa no banco de dados", 404));
         }
     }
 

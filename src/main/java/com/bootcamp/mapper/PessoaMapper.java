@@ -1,24 +1,18 @@
 package com.bootcamp.mapper;
 
-import com.bootcamp.dto.BairroDTO;
 import com.bootcamp.dto.PessoaDTO;
 import com.bootcamp.entities.Pessoa;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class PessoaMapper {
 
-
-    @Autowired
     EnderecoMapper enderecoMapper;
-
-
     public PessoaDTO toDTO(Pessoa pessoa, boolean isEndereco) {
         PessoaDTO dto = new PessoaDTO();
         dto.setCodigoPessoa(pessoa.getCodigoPessoa());
@@ -28,7 +22,7 @@ public class PessoaMapper {
         dto.setLogin(pessoa.getLogin());
         dto.setSenha(pessoa.getSenha());
         dto.setStatus(pessoa.getStatus());
-        dto.setEnderecos(isEndereco ? dto.getEnderecos(): new ArrayList<>()); //se for true traz os endereços se não traz uma lista vazia de endereços conforme a regra de negócio
+        dto.setEnderecos(isEndereco ? pessoa.getEndereco().stream().map(enderecoMapper::toEnderecoDTO).collect(Collectors.toList()): new ArrayList<>());
         return dto;
     }
 
@@ -43,9 +37,5 @@ public class PessoaMapper {
         pessoa.setStatus(pessoaDTO.getStatus());
         pessoa.setEndereco(pessoaDTO.getEnderecos().stream().map(enderecoMapper::toEnderecoEntity).collect(Collectors.toList()));
         return pessoa;
-
-
     }
-
-
 }
