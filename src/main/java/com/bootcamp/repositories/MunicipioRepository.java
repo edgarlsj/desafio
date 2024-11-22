@@ -7,4 +7,6 @@ public interface MunicipioRepository extends JpaRepository<Municipio, Long> {
 
     boolean existsByNome(String nome);//cria um método que verifica se existe um município com o nome informado
 
+    boolean existsByCodigoMunicipio(Long codigoMunicipio);//cria um método que verifica se existe um município com o código informado
+
 }

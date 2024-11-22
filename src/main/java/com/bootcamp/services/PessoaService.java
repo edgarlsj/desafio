@@ -7,6 +7,7 @@ import com.bootcamp.entities.Pessoa;
 import com.bootcamp.exceptions.DesafioException;
 import com.bootcamp.repositories.PessoaRepository;
 import com.bootcamp.mapper.PessoaMapper;
+import com.bootcamp.util.ValidateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,6 +55,30 @@ public class PessoaService {
 
     @Transactional
     public List<PessoaDTO> createPessoa(PessoaDTO pessoaDTO) {
+        //Validações
+        ValidateUtils.validateNome(pessoaDTO.getNome());//Valida se o nome é nulo ou vazio
+        ValidateUtils.validateSobrenome(pessoaDTO.getSobrenome());//Valida se o sobrenome é nulo ou vazio
+        ValidateUtils.validateIdade(pessoaDTO.getIdade());//Valida se a idade é nula ou menor que 0
+        ValidateUtils.validateLogin(pessoaDTO.getLogin());//Valida se o login é nulo ou vazio
+        ValidateUtils.validateSenha(pessoaDTO.getSenha());//Valida se a senha é nula ou vazia
+        ValidateUtils.validateStatus(pessoaDTO.getStatus());//Valida se o status é nulo ou diferente de 1 ou 2
+
+
+        if (pessoaRepository.existsByLogin(pessoaDTO.getLogin())) {
+            throw new DesafioException("Não foi possível incluir pessoa no banco de dados. Motivo: já existe um(a) registro com o login no banco de dados.");
+        }
+
+        if (pessoaRepository.existsByNome(pessoaDTO.getNome())) {
+            throw new DesafioException("Não foi possível incluir pessoa no banco de dados. Motivo: já existe um(a) registro com o nome no banco de dados.");
+        }
+
+        if (pessoaRepository.existsBySobrenome(pessoaDTO.getSobrenome())) {
+            throw new DesafioException("Não foi possível incluir pessoa no banco de dados. Motivo: já existe um(a) registro com o sobrenome no banco de dados.");
+        }
+
+
+
+
         //converte o DTO para entidade
         Pessoa pessoa = pessoaMapper.toEntity(pessoaDTO);
 

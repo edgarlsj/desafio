@@ -5,6 +5,7 @@ import com.bootcamp.entities.UF;
 import com.bootcamp.exceptions.DesafioException;
 import com.bootcamp.repositories.UFRepository;
 import com.bootcamp.mapper.UFMapper;
+import com.bootcamp.util.ValidateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,13 +48,22 @@ public class UFService {
 
     @Transactional
     public List<UFDTO> create(UFDTO ufDTO){
-        if (ufDTO.getNome() == null || ufDTO.getNome().trim().isEmpty() ||
-                ufDTO.getSigla() == null || ufDTO.getSigla().trim().isEmpty()) {
-            throw new DesafioException("Não foi possível incluir UF no banco de dados. Motivo: sigla ou nome não pode ser vazio.");
+        //Validações
+        ValidateUtils.validateStatus(ufDTO.getStatus());
+        ValidateUtils.validateNome(ufDTO.getNome());
+        ValidateUtils.validateSigla(ufDTO.getSigla());
+
+
+        //Valida se já existe um registro com o mesmo nome ou sigla
+
+        if (ufRepository.existsByNome(ufDTO.getNome())) {
+            throw new DesafioException("Não foi possível incluir UF no banco de dados. Motivo: já existe um(a) registro com o nome no banco de dados.");
         }
-        if (ufRepository.existsByNome(ufDTO.getNome()) || ufRepository.existsBySigla(ufDTO.getSigla())) {
-            throw new DesafioException("Não foi possível incluir UF no banco de dados. Motivo: já existe um(a) registro com a sigla ou nome no banco de dados.");
+        if (ufRepository.existsBySigla(ufDTO.getSigla())) {
+            throw new DesafioException("Não foi possível incluir UF no banco de dados. Motivo: já existe um(a) registro com a sigla no banco de dados.");
         }
+
+
         UF uf = ufMapper.toEntity(ufDTO);
         ufRepository.save(uf);
         List<UFDTO> list = getAll(null, null, null, null);//retorna a lista atualizada

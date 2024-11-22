@@ -1,6 +1,7 @@
 package com.bootcamp.controllers;
 
 import com.bootcamp.dto.BairroDTO;
+import com.bootcamp.exceptions.DesafioException;
 import com.bootcamp.exceptions.ErrorResponseDesafio;
 import com.bootcamp.services.BairroService;
 import lombok.AllArgsConstructor;
@@ -44,8 +45,10 @@ public class BairroController {
         try {
             List<BairroDTO> bairro = bairroService.createBairro(bairroDTO);
             return ResponseEntity.status(200).body(bairro);
-        } catch (Exception e) {
-            return ResponseEntity.status(404).body(e.getMessage());
+        } catch (DesafioException e) {
+            return ResponseEntity.status(404).body(new ErrorResponseDesafio(e.getMessage(), 404));
+        }catch (Exception e) {
+            return ResponseEntity.status(404).body(new ErrorResponseDesafio("Não foi possível criar bairro no banco de dados", 404));
         }
 
     }

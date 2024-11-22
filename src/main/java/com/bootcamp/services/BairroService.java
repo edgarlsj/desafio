@@ -5,6 +5,8 @@ import com.bootcamp.entities.Bairro;
 import com.bootcamp.exceptions.DesafioException;
 import com.bootcamp.repositories.BairroRepository;
 import com.bootcamp.mapper.BairroMapper;
+import com.bootcamp.repositories.MunicipioRepository;
+import com.bootcamp.util.ValidateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +21,9 @@ public class BairroService {
 
     @Autowired
     public BairroMapper bairroMapper;
+
+    @Autowired
+    public MunicipioRepository municipioRepository;
 
 
 
@@ -42,6 +47,20 @@ public class BairroService {
 
     @Transactional
     public List<BairroDTO> createBairro(BairroDTO bairroDTO) {
+        ValidateUtils.validateNome(bairroDTO.getNome());
+        ValidateUtils.validateStatus(bairroDTO.getStatus());
+
+        if (!municipioRepository.existsByCodigoMunicipio(bairroDTO.getCodigoMunicipio())) {
+            throw new DesafioException("Não foi possível incluir bairro no banco de dados. Motivo: código do município não encontrado.");
+        }
+
+        if (bairroRepository.existsByNome(bairroDTO.getNome())) {
+            throw new DesafioException("Não foi possível incluir bairro no banco de dados. Motivo: já existe um(a) registro com o nome no banco de dados.");
+        }
+
+
+
+
         Bairro bairro = bairroMapper.toEntity(bairroDTO);
         bairroRepository.save(bairro);
         List<BairroDTO> bairrosDTO = getAll(null, null, null);//retona todos os bairros

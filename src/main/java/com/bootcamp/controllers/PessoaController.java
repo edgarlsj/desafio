@@ -52,10 +52,12 @@ public class PessoaController {
         try {
             List<PessoaDTO> pessoa = pessoaService.createPessoa(pessoaDTO);
             return ResponseEntity.status(200).body(pessoa);
+        } catch (DesafioException e) {
+            return ResponseEntity.status(404).body(new ErrorResponseDesafio(e.getMessage(), 404));
         } catch (Exception e) {
-            return ResponseEntity.status(404).body(e.getMessage());
-        }
+            return ResponseEntity.status(404).body(new ErrorResponseDesafio("Não foi possível criar pessoa no banco de dados", 404));
 
+        }
     }
 
     @PutMapping
