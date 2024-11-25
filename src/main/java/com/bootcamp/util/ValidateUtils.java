@@ -46,4 +46,10 @@ public class ValidateUtils {
         }
     }
 
+    public static void validateCodigoPessoa(String codigoPessoa) {
+        if (codigoPessoa == null || codigoPessoa.trim().isEmpty()) {
+            throw new DesafioException("Não foi possível realizar a operação no banco de dados. Motivo: \"codigoPessoa\" não pode ser vazio.");
+        }
+    }
+
 }

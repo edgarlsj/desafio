@@ -6,6 +6,7 @@ import com.bootcamp.dto.UFDTO;
 import com.bootcamp.exceptions.DesafioException;
 import com.bootcamp.exceptions.ErrorResponseDesafio;
 import com.bootcamp.services.PessoaService;
+import com.bootcamp.util.ValidateUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class PessoaController {
 
 
     @GetMapping
-    public ResponseEntity<?> getAllPessoa(@RequestParam(required = false) Long codigoPessoa,
+    public ResponseEntity<?> getAllPessoa(@RequestParam(required = false) String codigoPessoa,
                                           @RequestParam(required = false) String nome,
                                           @RequestParam(required = false) String sobrenome,
                                           @RequestParam(required = false) Integer idade,
@@ -32,17 +33,25 @@ public class PessoaController {
                                           @RequestParam(required = false) Integer status) {
 
         try {
+            Long codigoPessoaLong = null;
             if (codigoPessoa != null) {
-                PessoaDTO pessoaDTO = pessoaService.getFindById(codigoPessoa);
+                try {
+                    codigoPessoaLong = Long.parseLong(codigoPessoa);
+                } catch (NumberFormatException e) {
+                    return ResponseEntity.status(404).body(new ErrorResponseDesafio("Não foi possivel consultar pessoa no banco de dados. Motivo: o Valor do campo codigoPessoa precisa ser um numero . e você passou "+codigoPessoa+"", 404));
+                }
+            }
+            if (codigoPessoa != null) {
+                PessoaDTO pessoaDTO = pessoaService.getFindById(codigoPessoaLong);
                 return ResponseEntity.status(200).body(pessoaDTO);
             } else {
-                List<PessoaDTO> pessoas = pessoaService.getAll(codigoPessoa, nome, sobrenome, idade, login, senha, status);
+                List<PessoaDTO> pessoas = pessoaService.getAll(codigoPessoaLong, nome, sobrenome, idade, login, senha, status);
                 return ResponseEntity.status(200).body(pessoas);
             }
 
         } catch (DesafioException e) {
             e.printStackTrace();
-            return ResponseEntity.status(404).body(new ErrorResponseDesafio("Não foi possível consultar pessoa no banco de dados", 404));
+            return ResponseEntity.status(404).body(new ErrorResponseDesafio(e.getMessage(), 404));
         }
 
     }
