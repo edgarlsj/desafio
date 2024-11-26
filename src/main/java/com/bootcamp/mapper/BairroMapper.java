@@ -1,6 +1,7 @@
 package com.bootcamp.mapper;
 
 import com.bootcamp.dto.BairroDTO;
+import com.bootcamp.dto.BairroDTODetalhado;
 import com.bootcamp.entities.Bairro;
 import com.bootcamp.entities.Municipio;
 import org.modelmapper.ModelMapper;
@@ -31,6 +32,17 @@ public class BairroMapper {
         bairro.setMunicipio(new Municipio(dto.getCodigoMunicipio(), null, null, 0));
         bairro.setStatus(dto.getStatus());
         return bairro;
+    }
+
+    public Bairro toEntityDetalhado(BairroDTODetalhado dto) {
+        Bairro bairro = new Bairro();
+
+        bairro.setCodigoBairro(dto.getCodigoBairro());
+        bairro.setNome(dto.getNome());
+        bairro.setMunicipio(new Municipio(dto.getCodigoMunicipio(), null, null, 0));
+        bairro.setStatus(dto.getStatus());
+        return bairro;
+
     }
 
 

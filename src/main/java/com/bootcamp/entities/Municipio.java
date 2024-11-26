@@ -12,8 +12,9 @@ import lombok.*;
 public class Municipio {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
-    @Column(name = "CODIGO_MUNICIPIO")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "municipio_seq")
+    @SequenceGenerator(name = "municipio_seq", sequenceName = "MUNICIPIO_SEQ", allocationSize = 1)
+    @Column(name = "CODIGO_MUNICIPIO", updatable = false, nullable = false)
     private Long codigoMunicipio;
 
     @Column(name = "NOME")

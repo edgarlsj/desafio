@@ -10,4 +10,6 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
     boolean existsByNome(String nome);//cria um método que verifica se existe uma pessoa com o nome informado
 
     boolean existsBySobrenome(String sobrenome);//cria um método que verifica se existe uma pessoa com o sobrenome informado
+
+    boolean existsByCodigoPessoa(Long codigoPessoa);//cria um método que verifica se existe uma pessoa com o código informado
 }

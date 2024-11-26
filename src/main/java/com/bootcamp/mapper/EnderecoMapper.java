@@ -48,8 +48,10 @@ public class EnderecoMapper {
         return dto;
     }
 
-     Endereco toEnderecoEntity(EnderecoDTO enderecoDTO) {
+    public Endereco toEnderecoEntity(EnderecoDTO enderecoDTO) {
         Endereco endereco = new Endereco();
+        endereco.setCodigoEndereco(enderecoDTO.getCodigoEndereco());
+        endereco.setPessoa(enderecoDTO.getCodigoPessoa());
         endereco.setNomeRua(enderecoDTO.getNomeRua());
         endereco.setNumero(enderecoDTO.getNumero());
         endereco.setComplemento(enderecoDTO.getComplemento());
@@ -57,4 +59,6 @@ public class EnderecoMapper {
         endereco.setBairro(new Bairro(enderecoDTO.getCodigoBairro(), null, null, 0));
         return endereco;
     }
+
+
 }

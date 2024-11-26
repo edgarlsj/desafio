@@ -58,6 +58,10 @@ public class MunicipioService {
 
 
         Municipio municipio = municipioMapper.toEntity(municipioDTO);
+
+        municipio.setCodigoMunicipio(null);
+
+
          municipioRepository.save(municipio);
          List<MunicipioDTO> municipios = getAll(null, null, null, null);//retona todos os municipios
         return municipios;

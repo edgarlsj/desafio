@@ -14,7 +14,8 @@ import lombok.NoArgsConstructor;
 public class Bairro {
 
         @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bairro_seq")
+        @SequenceGenerator(name = "bairro_seq", sequenceName = "BAIRRO_SEQ", allocationSize = 1)
         @Column(name = "CODIGO_BAIRRO")
         private Long codigoBairro;
 

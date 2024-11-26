@@ -1,5 +1,6 @@
 package com.bootcamp.util;
 
+import com.bootcamp.dto.PessoaDTO;
 import com.bootcamp.exceptions.DesafioException;
 
 public class ValidateUtils {
@@ -46,10 +47,13 @@ public class ValidateUtils {
         }
     }
 
-    public static void validateCodigoPessoa(String codigoPessoa) {
-        if (codigoPessoa == null || codigoPessoa.trim().isEmpty()) {
-            throw new DesafioException("Não foi possível realizar a operação no banco de dados. Motivo: \"codigoPessoa\" não pode ser vazio.");
+
+    public static void validateEnderecosNotEmpty(PessoaDTO pessoaDTO) {
+        if (pessoaDTO.getEnderecos() == null || pessoaDTO.getEnderecos().isEmpty()) {
+            throw new DesafioException("Não foi possível realizar a operação no banco de dados. Motivo: pelo menos um endereço é obrigatório.");
         }
     }
+
+
 
 }

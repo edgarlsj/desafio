@@ -11,7 +11,8 @@ import lombok.*;
 @AllArgsConstructor
 public class UF {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "uf_seq")
+    @SequenceGenerator(name = "uf_seq", sequenceName = "UF_SEQ", allocationSize = 1)
     @Column(name = "CODIGO_UF")
     private Long codigoUF;
 
