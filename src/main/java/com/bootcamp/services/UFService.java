@@ -105,6 +105,9 @@ public class UFService {
         ValidateUtils.validateStatus(ufDTO.getStatus());
         ValidateUtils.validatecodigoUF(ufDTO.getCodigoUF());
 
+        ufDTO.setNome(ufDTO.getNome().trim());// Remove espaços do nome
+        ufDTO.setSigla(ufDTO.getSigla().trim());// Remove espaços da sigla
+
 
 
         if (!ufRepository.existsByCodigoUF(ufDTO.getCodigoUF())) {//verifica se o código da UF existe
