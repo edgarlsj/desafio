@@ -42,7 +42,7 @@ public class PessoaController {
                 }
             }
             if (codigoPessoa != null) {
-                PessoaDTO pessoaDTO = pessoaService.getFindById(codigoPessoaLong);
+                Object pessoaDTO = pessoaService.getFindById(codigoPessoaLong);
                 return ResponseEntity.status(200).body(pessoaDTO);
             } else {
                 List<PessoaDTO> pessoas = pessoaService.getAll(codigoPessoaLong, nome, sobrenome, idade, login, senha, status);

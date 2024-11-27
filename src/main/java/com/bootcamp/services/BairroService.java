@@ -50,8 +50,10 @@ public class BairroService {
         ValidateUtils.validateNome(bairroDTO.getNome());
         ValidateUtils.validateStatus(bairroDTO.getStatus());
 
+        bairroDTO.setNome(bairroDTO.getNome().trim()); // Remove espaços do nome
+
         if (!municipioRepository.existsByCodigoMunicipio(bairroDTO.getCodigoMunicipio())) {
-            throw new DesafioException("Não foi possível incluir bairro no banco de dados. Motivo: código do município "+bairroDTO.getCodigoMunicipio()+"não encontrado.");
+            throw new DesafioException("Não foi possível incluir bairro no banco de dados. Motivo: código do município "+bairroDTO.getCodigoMunicipio()+" não encontrado.");
         }
 
         if (bairroRepository.existsByNome(bairroDTO.getNome())) {
@@ -71,6 +73,8 @@ public class BairroService {
     public List<BairroDTO> updateBairro(BairroDTO bairroDTO) {
             ValidateUtils.validateNome(bairroDTO.getNome());
             ValidateUtils.validateStatus(bairroDTO.getStatus());
+
+            bairroDTO.setNome(bairroDTO.getNome().trim()); // Remove espaços do nome
 
          if (!bairroRepository.existsByCodigoBairro(bairroDTO.getCodigoBairro())) {
             throw new DesafioException("Não foi possível atualizar bairro no banco de dados. Motivo: código do bairro "+bairroDTO.getCodigoBairro()+" não foi encontrado!.");

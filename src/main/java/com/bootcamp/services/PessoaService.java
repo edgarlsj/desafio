@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,8 +57,11 @@ public class PessoaService {
                         .toList());
     }
 
-    public PessoaDTO getFindById(Long codigoPessoa) {
-        Pessoa pessoa = pessoaRepository.findById(codigoPessoa).orElseThrow(() -> new DesafioException("Não foi possível consultar pessoa no banco de dados."));
+    public Object getFindById(Long codigoPessoa) {
+        Pessoa pessoa = pessoaRepository.findById(codigoPessoa).orElse(null);
+        if (pessoa == null) {
+            return new ArrayList<>();//
+        }
         return pessoaMapper.toDTO(pessoa, true);//true para trazer os endereços
     }
 
@@ -70,6 +75,11 @@ public class PessoaService {
         ValidateUtils.validateSenha(pessoaDTO.getSenha());//Valida se a senha é nula ou vazia
         ValidateUtils.validateStatus(pessoaDTO.getStatus());//Valida se o status é nulo ou diferente de 1 ou 2
         ValidateUtils.validateEnderecosNotEmpty(pessoaDTO);//Valida se a lista de endereços é nula ou vazia
+
+
+        pessoaDTO.setLogin(pessoaDTO.getLogin().trim());// Remove espaços do login
+
+
 
         // Valida se o login já existe
         if (pessoaRepository.existsByLogin(pessoaDTO.getLogin())) {

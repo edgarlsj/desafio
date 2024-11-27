@@ -23,17 +23,25 @@ public class MunicipioController {
 
 
     @GetMapping
-    public ResponseEntity<?> getAllMunicipios(@RequestParam (required = false) Long codigoMunicipio,
+    public ResponseEntity<?> getAllMunicipios(@RequestParam (required = false) String codigoMunicipio,
                                               @RequestParam (required = false) Long codigoUF,
                                               @RequestParam (required = false) String nome,
                                               @RequestParam (required = false) Integer status) {
 
         try {
+            Long codigoMunicipioLong = null;
             if (codigoMunicipio != null) {
-                MunicipioDTO municipio = municipioService.getByCodigoMunicipio(codigoMunicipio);
+                try {
+                    codigoMunicipioLong = Long.parseLong(codigoMunicipio);
+                } catch (NumberFormatException e) {
+                    return ResponseEntity.status(404).body(new ErrorResponseDesafio("Não foi possivel consultar municipio no banco de dados. Motivo: o Valor do campo codigoMunicipio precisa ser um numero . e você passou "+codigoMunicipio+"", 404));
+                }
+            }
+            if (codigoMunicipio != null) {
+                MunicipioDTO municipio = municipioService.getByCodigoMunicipio(codigoMunicipioLong);
                 return ResponseEntity.status(200).body(municipio);
             } else {
-                List<MunicipioDTO> municipios = municipioService.getAll(codigoMunicipio, codigoUF, nome, status);
+                List<MunicipioDTO> municipios = municipioService.getAll(codigoMunicipioLong, codigoUF, nome, status);
                 return ResponseEntity.status(200).body(municipios);
             }
 

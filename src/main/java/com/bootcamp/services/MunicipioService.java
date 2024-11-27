@@ -32,6 +32,7 @@ public class MunicipioService {
                         (nome == null || m.getNome().equalsIgnoreCase(nome)) &&
                         (status == null || m.getStatus() == status))
                 .collect(Collectors.toList());
+
         return municipios.stream()
                 .map(municipioMapper::toDTO)
                 .collect(Collectors.toList());
@@ -48,9 +49,13 @@ public class MunicipioService {
         ValidateUtils.validateStatus(municipioDTO.getStatus());
         ValidateUtils.validateNome(municipioDTO.getNome());
 
+
+        // Remove espaços do nome
+        municipioDTO.setNome(municipioDTO.getNome().trim());
+
       //Valida se já existe um registro com o mesmo nome ou sigla
         if (municipioRepository.existsByNome(municipioDTO.getNome())) {
-            throw new DesafioException("Não foi possível incluir municipio no banco de dados. Motivo: já existe um(a) registro com o nome no banco de dados.");
+            throw new DesafioException("Não foi possível incluir municipio no banco de dados. Motivo: já existe um(a) registro com o nome "+municipioDTO.getNome()+" no banco de dados.");
         }
         if (!UFRepository.existsByCodigoUF(municipioDTO.getCodigoUF())) {
             throw new DesafioException("Não foi possível incluir municipio no banco de dados. Motivo: código do UF não encontrado.");

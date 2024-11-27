@@ -29,7 +29,13 @@ public class UFController {
 
         try {
             if (codigoUF != null) {
-                UFDTO uf = ufService.getFindById(codigoUF);
+                Object uf = ufService.getFindById(codigoUF);
+                return ResponseEntity.status(200).body(uf);
+            } else if (sigla != null) {
+                Object uf = ufService.getFindBySigla(sigla);
+                return ResponseEntity.status(200).body(uf);
+            } else if (nome != null) {
+                Object uf = ufService.getFindByNome(nome);
                 return ResponseEntity.status(200).body(uf);
             } else {
                 List<UFDTO> ufs = ufService.getAll(codigoUF, nome, sigla, status);
