@@ -26,7 +26,7 @@ public class BairroController {
         {
             try {
                 Long codigoBairroLong = null;
-                if (codigoBairro != null || codigoMunicipio != null) {
+                if (codigoBairro != null) {
                     try {
                         codigoBairroLong = Long.parseLong(codigoBairro);
 

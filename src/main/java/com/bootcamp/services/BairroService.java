@@ -40,6 +40,7 @@ public class BairroService {
     }
 
     @Transactional
+    //Metodo para buscar bairro por codigo
     public BairroDTO getByCodigoBairro(Long codigoBairro) {
         Bairro bairro = bairroRepository.findById(codigoBairro).orElseThrow(() -> new DesafioException("Não foi possível consultar bairro no banco de dados."));
         return bairroMapper.toDto(bairro);
@@ -51,18 +52,18 @@ public class BairroService {
         ValidateUtils.validateStatus(bairroDTO.getStatus());
 
         bairroDTO.setNome(bairroDTO.getNome().trim()); // Remove espaços do nome
-
+   //Valida se já existe um registro com o mesmo código
         if (!municipioRepository.existsByCodigoMunicipio(bairroDTO.getCodigoMunicipio())) {
             throw new DesafioException("Não foi possível incluir bairro no banco de dados. Motivo: código do município "+bairroDTO.getCodigoMunicipio()+" não encontrado.");
         }
-
+        //Valida se já existe um registro com o mesmo nome
         if (bairroRepository.existsByNome(bairroDTO.getNome())) {
             throw new DesafioException("Não foi possível incluir bairro no banco de dados. Motivo: já existe um(a) registro com o nome "+bairroDTO.getNome()+" no banco de dados.");
         }
 
 
 
-
+//        Converte o DTO para entidade
         Bairro bairro = bairroMapper.toEntity(bairroDTO);
         bairroRepository.save(bairro);
         List<BairroDTO> bairrosDTO = getAll(null, null, null);//retona todos os bairros
@@ -75,10 +76,11 @@ public class BairroService {
             ValidateUtils.validateStatus(bairroDTO.getStatus());
 
             bairroDTO.setNome(bairroDTO.getNome().trim()); // Remove espaços do nome
-
+        //Valida se já existe um registro com o mesmo código
          if (!bairroRepository.existsByCodigoBairro(bairroDTO.getCodigoBairro())) {
             throw new DesafioException("Não foi possível atualizar bairro no banco de dados. Motivo: código do bairro "+bairroDTO.getCodigoBairro()+" não foi encontrado!.");
         }
+         //Valida se já existe um registro com o mesmo nome
         if (!municipioRepository.existsByCodigoMunicipio(bairroDTO.getCodigoMunicipio())) {
             throw new DesafioException("Não foi possível atualizar bairro no banco de dados. Motivo: código do município "+bairroDTO.getCodigoMunicipio()+" não foi encontrado!.");
         }

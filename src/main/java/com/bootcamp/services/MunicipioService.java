@@ -2,6 +2,7 @@ package com.bootcamp.services;
 
 import com.bootcamp.dto.MunicipioDTO;
 import com.bootcamp.entities.Municipio;
+import com.bootcamp.entities.UF;
 import com.bootcamp.exceptions.DesafioException;
 import com.bootcamp.repositories.MunicipioRepository;
 import com.bootcamp.mapper.MunicipioMapper;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,6 +41,7 @@ public class MunicipioService {
 
     }
 
+    @Transactional
     public MunicipioDTO getByCodigoMunicipio(Long codigoMunicipio) {
         Municipio municipio = municipioRepository.findById(codigoMunicipio).orElseThrow(() -> new DesafioException("Não foi possível consultar municipio no banco de dados."));
         return municipioMapper.toDTO(municipio);

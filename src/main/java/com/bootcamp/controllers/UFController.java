@@ -22,14 +22,22 @@ public class UFController {
 
 
     @GetMapping
-    public ResponseEntity<?> getAllUF(@RequestParam(required = false) Long codigoUF,
+    public ResponseEntity<?> getAllUF(@RequestParam(required = false) String codigoUF,
                                       @RequestParam(required = false) String nome,
                                       @RequestParam(required = false) String sigla,
                                       @RequestParam(required = false) Integer status) {
 
         try {
+            Long codigoUFLong = null;
             if (codigoUF != null) {
-                Object uf = ufService.getFindById(codigoUF);
+                try {
+                    codigoUFLong = Long.parseLong(codigoUF);
+                } catch (NumberFormatException e) {
+                    return ResponseEntity.status(404).body(new ErrorResponseDesafio("Não foi possivel consultar UF no banco de dados. Motivo: o Valor do campo codigoUF precisa ser um numero . e você passou "+codigoUF+"", 404));
+                }
+            }
+            if (codigoUF != null) {
+                Object uf = ufService.getFindById(codigoUFLong);
                 return ResponseEntity.status(200).body(uf);
             } else if (sigla != null) {
                 Object uf = ufService.getFindBySigla(sigla);
@@ -38,7 +46,7 @@ public class UFController {
                 Object uf = ufService.getFindByNome(nome);
                 return ResponseEntity.status(200).body(uf);
             } else {
-                List<UFDTO> ufs = ufService.getAll(codigoUF, nome, sigla, status);
+                List<UFDTO> ufs = ufService.getAll(codigoUFLong, nome, sigla, status);
                 return ResponseEntity.status(200).body(ufs);
             }
 

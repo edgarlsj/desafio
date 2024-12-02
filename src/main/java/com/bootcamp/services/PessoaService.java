@@ -198,26 +198,26 @@ public class PessoaService {
         //Valida se bairro existe
         for (EnderecoDTO endereco : pessoaDTO.getEnderecos()) {
             if (!bairroRepository.existsByCodigoBairro(endereco.getCodigoBairro())) {
-                throw new DesafioException("Bairro não encontrado!");
+                throw new DesafioException("Não foi possivel alterar endereço no banco de dados. Motivo: Bairro não encontrado!");
             }
         }
         //Valida se endereço existe e se a pessoa existe no endereco
         for (EnderecoDTO endereco : pessoaDTO.getEnderecos()) {
             if (endereco.getCodigoEndereco() != null){
                 if (!enderecoRepository.existsByCodigoEndereco(endereco.getCodigoEndereco())) {
-                    throw new DesafioException("Endereço não encontrado!");
+                    throw new DesafioException("Não foi possivel alterar endereço no banco de dados. Motivo: Endereço não encontrado!");
                 }
             }
             if (endereco.getCodigoPessoa() != null){
                 if (!pessoaRepository.existsByCodigoPessoa(endereco.getCodigoPessoa())) {
-                    throw new DesafioException("Pessoa não encontrada no endereco!");
+                    throw new DesafioException(" Não foi possivel alterar endereço no banco de dados. Motivo: (codigoPessoa) não foi encontrada no endereco!");
                 }
             }
         }
 
         // Valida se a pessoa existe
         if (!pessoaRepository.existsByCodigoPessoa(pessoaDTO.getCodigoPessoa())) {
-            throw new DesafioException("Pessoa não encontrada!");
+            throw new DesafioException("Não foi possivel alterar pessoa no banco de dados. Motivo:Pessoa não encontrada!");
         }
     }
 
