@@ -30,7 +30,7 @@ public class PessoaController {
                                           @RequestParam(required = false) Integer idade,
                                           @RequestParam(required = false) String login,
                                           @RequestParam(required = false) String senha,
-                                          @RequestParam(required = false) Integer status) {
+                                          @RequestParam(required = false) String status) {
 
         try {
             Long codigoPessoaLong = null;
@@ -45,13 +45,21 @@ public class PessoaController {
                 Object pessoaDTO = pessoaService.getFindById(codigoPessoaLong);
                 return ResponseEntity.status(200).body(pessoaDTO);
             } else {
-                List<PessoaDTO> pessoas = pessoaService.getAll(codigoPessoaLong, nome, sobrenome, idade, login, senha, status);
+                Integer statusInt = null;
+                if (status != null) {
+                    try {
+                        statusInt = Integer.parseInt(status);
+                    } catch (NumberFormatException e) {
+                        return ResponseEntity.status(404).body(new ErrorResponseDesafio("Não foi possivel consultar pessoa no banco de dados. Motivo: o Valor do campo status precisa ser um numero . e você passou "+status+"", 404));
+                    }
+                }
+                List<PessoaDTO> pessoas = pessoaService.getAll(codigoPessoaLong, nome, sobrenome, idade, login, senha, statusInt);
                 return ResponseEntity.status(200).body(pessoas);
             }
 
         } catch (DesafioException e) {
             e.printStackTrace();
-            return ResponseEntity.status(404).body(new ErrorResponseDesafio(e.getMessage(), 404));
+            return ResponseEntity.status(404).body(new ErrorResponseDesafio("Não foi possível criar pessoa no banco de dados", 404));
         }
 
     }

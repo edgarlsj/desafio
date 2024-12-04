@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,9 +42,26 @@ public class BairroService {
 
     @Transactional
     //Metodo para buscar bairro por codigo
-    public BairroDTO getByCodigoBairro(Long codigoBairro) {
-        Bairro bairro = bairroRepository.findById(codigoBairro).orElseThrow(() -> new DesafioException("Não foi possível consultar bairro no banco de dados."));
+    public Object getByCodigoBairro(Long codigoBairro) {
+        Bairro bairro = bairroRepository.findById(codigoBairro).orElse(null);
+        if (bairro == null) {
+            return new ArrayList<>();
+        }
         return bairroMapper.toDto(bairro);
+    }
+
+   @Transactional
+    //Metodo para buscar bairro por codigo do municipio
+    public Object getByCodigoMunicipio(Long codigoMunicipio) {
+        List<Bairro> bairros = bairroRepository.findAll().stream()
+                .filter(b -> b.getMunicipio().getCodigoMunicipio().equals(codigoMunicipio))
+                .collect(Collectors.toList());
+        if (bairros.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return bairros.stream()
+                .map(bairroMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -52,14 +70,15 @@ public class BairroService {
         ValidateUtils.validateStatus(bairroDTO.getStatus());
 
         bairroDTO.setNome(bairroDTO.getNome().trim()); // Remove espaços do nome
-   //Valida se já existe um registro com o mesmo código
+   //Valida se já existe um registro com o mesmo código do bairro e do município informado
         if (!municipioRepository.existsByCodigoMunicipio(bairroDTO.getCodigoMunicipio())) {
             throw new DesafioException("Não foi possível incluir bairro no banco de dados. Motivo: código do município "+bairroDTO.getCodigoMunicipio()+" não encontrado.");
         }
-        //Valida se já existe um registro com o mesmo nome
-        if (bairroRepository.existsByNome(bairroDTO.getNome())) {
-            throw new DesafioException("Não foi possível incluir bairro no banco de dados. Motivo: já existe um(a) registro com o nome "+bairroDTO.getNome()+" no banco de dados.");
+
+        if (bairroRepository.existsByNomeAndMunicipio_CodigoMunicipio(bairroDTO.getNome(), bairroDTO.getCodigoMunicipio())) {
+            throw new DesafioException("Não foi possível incluir bairro no banco de dados. Motivo: bairro com nome "+bairroDTO.getNome()+" e código do município "+bairroDTO.getCodigoMunicipio()+" já existe.");
         }
+
 
 
 

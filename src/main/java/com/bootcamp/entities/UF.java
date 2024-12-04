@@ -5,10 +5,11 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "UF")
+@Table(name = "TB_UF")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public class UF {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "uf_seq")

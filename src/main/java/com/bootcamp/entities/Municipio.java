@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "MUNICIPIO")
+@Table(name = "TB_MUNICIPIO")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,4 +26,5 @@ public class Municipio {
 
     @Column(name = "STATUS")
     private int status;
+
 }

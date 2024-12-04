@@ -90,10 +90,6 @@ public class PessoaService {
         if (pessoaRepository.existsByNome(pessoaDTO.getNome())) {
             throw new DesafioException("Não foi possível incluir pessoa no banco de dados. Motivo: já existe um(a) registro com o nome: " + pessoaDTO.getNome() + " no banco de dados.");
         }
-        // Valida se o sobrenome já existe
-        if (pessoaRepository.existsBySobrenome(pessoaDTO.getSobrenome())) {
-            throw new DesafioException("Não foi possível incluir pessoa no banco de dados. Motivo: já existe um(a) registro com o sobrenome: " + pessoaDTO.getSobrenome() + " no banco de dados.");
-        }
 
         // Valida se o código do bairro existe. Se não existir, lança uma exceção informando o motivo
         for (EnderecoDTO endereco : pessoaDTO.getEnderecos()) {

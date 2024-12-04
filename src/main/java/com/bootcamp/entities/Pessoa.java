@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "PESSOA")
+@Table(name = "TB_PESSOA")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

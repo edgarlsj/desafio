@@ -6,6 +6,7 @@ import com.bootcamp.dto.MunicipioDTO;
 import com.bootcamp.exceptions.DesafioException;
 import com.bootcamp.exceptions.ErrorResponseDesafio;
 import com.bootcamp.services.MunicipioService;
+import com.bootcamp.util.ConverterUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class MunicipioController {
     public ResponseEntity<?> getAllMunicipios(@RequestParam (required = false) String codigoMunicipio,
                                               @RequestParam (required = false) Long codigoUF,
                                               @RequestParam (required = false) String nome,
-                                              @RequestParam (required = false) Integer status) {
+                                              @RequestParam (required = false) String status) {
 
         try {
             Long codigoMunicipioLong = null;
@@ -38,10 +39,12 @@ public class MunicipioController {
                 }
             }
             if (codigoMunicipio != null) {
-                MunicipioDTO municipio = municipioService.getByCodigoMunicipio(codigoMunicipioLong);
+                Object municipio = municipioService.getByCodigoMunicipio(codigoMunicipioLong);
                 return ResponseEntity.status(200).body(municipio);
+
             } else {
-                List<MunicipioDTO> municipios = municipioService.getAll(codigoMunicipioLong, codigoUF, nome, status);
+
+                List<MunicipioDTO> municipios = municipioService.getAll(codigoMunicipioLong, codigoUF, nome, ConverterUtil.convertStringToInteger(status));
                 return ResponseEntity.status(200).body(municipios);
             }
 

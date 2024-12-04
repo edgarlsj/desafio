@@ -44,9 +44,11 @@ public class UFService {
 
     public Object getFindById(Long codigoUF) {
         UF uf = ufRepository.findById(codigoUF).orElse(null);
+        //Se não encontrar a UF, retorna uma lista vazia
         if (uf == null) {
             return new ArrayList<>(); //retorna uma lista vazia
         }
+        //Se encontrar a UF, retorna o objeto
         return ufMapper.toDTO(uf);
     }
 

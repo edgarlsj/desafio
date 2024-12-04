@@ -42,8 +42,12 @@ public class MunicipioService {
     }
 
     @Transactional
-    public MunicipioDTO getByCodigoMunicipio(Long codigoMunicipio) {
-        Municipio municipio = municipioRepository.findById(codigoMunicipio).orElseThrow(() -> new DesafioException("Não foi possível consultar municipio no banco de dados."));
+    public Object getByCodigoMunicipio(Long codigoMunicipio) {
+        Municipio municipio = municipioRepository.findById(codigoMunicipio).orElse(null);
+
+        if (municipio == null) {
+            return new ArrayList<>();
+    }
         return municipioMapper.toDTO(municipio);
     }
     @Transactional
@@ -57,8 +61,8 @@ public class MunicipioService {
         municipioDTO.setNome(municipioDTO.getNome().trim());
 
       //Valida se já existe um registro com o mesmo nome ou sigla
-        if (municipioRepository.existsByNome(municipioDTO.getNome())) {
-            throw new DesafioException("Não foi possível incluir municipio no banco de dados. Motivo: já existe um(a) registro com o nome "+municipioDTO.getNome()+" no banco de dados.");
+        if (municipioRepository.existsByNomeAndUf_CodigoUF(municipioDTO.getNome(), municipioDTO.getCodigoUF())) {
+            throw new DesafioException("Não foi possível incluir municipio no banco de dados. Motivo: município com nome "+municipioDTO.getNome()+" e código da UF "+municipioDTO.getCodigoUF()+" já existe.");
         }
         if (!UFRepository.existsByCodigoUF(municipioDTO.getCodigoUF())) {
             throw new DesafioException("Não foi possível incluir municipio no banco de dados. Motivo: código do UF não encontrado.");
