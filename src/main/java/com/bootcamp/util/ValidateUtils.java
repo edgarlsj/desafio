@@ -60,6 +60,35 @@ public class ValidateUtils {
         }
     }
 
+    public static void validateNomeRua (String nomeRua){
+        if (nomeRua == null || nomeRua.trim().isEmpty()){
+            throw new DesafioException("Não foi possível realizar a operação no banco de dados. Motivo: (nomeRua) é obrigatório.");
+        }
+    }
+
+    public static void validateNumero (Integer numero){
+        if (numero == null || numero <= 0){
+            throw new DesafioException("Não foi possível realizar a operação no banco de dados. Motivo: (numero) não pode ser vazio ou menor que 0.");
+        }
+    }
+
+    public static void  validateCep (String cep){
+        if (cep == null || cep.trim().isEmpty()){
+            throw new DesafioException("Não foi possível realizar a operação no banco de dados. Motivo: (cep) é obrigatório.");
+        }
+    }
+
+    public static void validateComplemento (String complemento){
+        if (complemento == null || complemento.trim().isEmpty()){
+            throw new DesafioException("Não foi possível realizar a operação no banco de dados. Motivo: (complemento) é obrigatório.");
+        }
+    }
+
+
+
+
+
+
 
 
 }

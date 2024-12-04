@@ -117,6 +117,23 @@ public class UFService {
         }
 
 
+        // Verifica se o nome já existe e se o código da UF é diferente
+        UF existingUFByName = ufRepository.findByNome(ufDTO.getNome()).orElse(null);
+        //Se já existir um registro com o mesmo nome e o código da UF for diferente, retorna uma exceção
+        if (existingUFByName != null && !existingUFByName.getCodigoUF().equals(ufDTO.getCodigoUF())) {
+            throw new DesafioException("Não foi possível atualizar UF. Motivo: já existe um(a) registro com o nome " + ufDTO.getNome() + " no banco de dados.");
+        }
+
+        // Verifica se a sigla já existe e se o código da UF é diferente
+        UF existingUFBySigla = ufRepository.findBySigla(ufDTO.getSigla()).orElse(null);
+        //Se já existir um registro com a mesma sigla e o código da UF for diferente, retorna uma exceção
+        if (existingUFBySigla != null && !existingUFBySigla.getCodigoUF().equals(ufDTO.getCodigoUF())) {
+            throw new DesafioException("Não foi possível atualizar UF. Motivo: já existe um(a) registro com a sigla " + ufDTO.getSigla() + " no banco de dados.");
+        }
+
+
+
+
         UF uf = ufMapper.toEntity(ufDTO);
         ufRepository.save(uf);
         List<UFDTO> list = getAll(null, null, null, null);//retorna a lista atualizada

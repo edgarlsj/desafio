@@ -190,6 +190,15 @@ public class PessoaService {
         ValidateUtils.validateStatus(pessoaDTO.getStatus());//Valida se o status é nulo ou diferente de 1 ou 2
         ValidateUtils.validateEnderecosNotEmpty(pessoaDTO);//Valida se a lista de endereços é nula ou vazia
 
+//        Validações de endereço da pessoa (nomeRua, numero, cep, complemento)
+        for (EnderecoDTO endereco : pessoaDTO.getEnderecos()) {
+            ValidateUtils.validateNomeRua(endereco.getNomeRua());
+            ValidateUtils.validateNumero(endereco.getNumero());
+            ValidateUtils.validateCep(endereco.getCep());
+            ValidateUtils.validateComplemento(endereco.getComplemento());
+
+        }
+
 
         //Valida se bairro existe
         for (EnderecoDTO endereco : pessoaDTO.getEnderecos()) {
