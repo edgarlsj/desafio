@@ -7,11 +7,13 @@ import com.bootcamp.repositories.UFRepository;
 import com.bootcamp.mapper.UFMapper;
 import com.bootcamp.util.ValidateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,54 +25,82 @@ public class UFService {
     @Autowired
     private UFMapper ufMapper;
 
-
-    public List<UFDTO> getAll(Long codigoUF, String nome, String sigla, Integer status) {
-        List<UF> ufs = ufRepository
-                .findAll()
-                .stream()
-                .filter(a -> (codigoUF == null || a.getCodigoUF().equals(codigoUF) )
-                        && (nome == null || a.getNome().equalsIgnoreCase(nome))
-                        && (sigla == null || a.getSigla().equalsIgnoreCase(sigla))
-                        && (status == null || a.getStatus() == status))
-                .collect(Collectors.toList());
-
-
-        return ufs.stream()
-                .map(ufMapper::toDTO)
-                .collect(Collectors
-                        .toList());
+    public List<UF> findAll() {
+        return ufRepository.findAll();
     }
 
 
-    public Object getFindById(Long codigoUF) {
-        UF uf = ufRepository.findById(codigoUF).orElse(null);
-        //Se não encontrar a UF, retorna uma lista vazia
-        if (uf == null) {
-            return new ArrayList<>(); //retorna uma lista vazia
-        }
+
+    public Object findOne(Long codigoUF, String Sigla, String nome, Integer status) {
+        //Cria um objeto UF com os parâmetros informados
+        UF ufModel = new UF(codigoUF, Sigla, nome, status);
+
+        //Busca a UF no banco de dados com base no objeto criado
+        var search = ufRepository.findOne(
+                Example.of(ufModel));
         //Se encontrar a UF, retorna o objeto
-        return ufMapper.toDTO(uf);
+        if (search.isPresent()) {
+            return search.get();
+        }
+        //Se não encontrar a UF, retorna uma lista vazia
+        return new ArrayList<>();
+    }
+    public List<UF> findAll(Integer status) {
+  //Cria um objeto UF com o status informado
+        UF uf = new UF();
+        //Define o status do objeto
+        uf.setStatus(status);
+        //Retorna a lista de UFs com base no objeto criado
+        return ufRepository.findAll(Example.of(uf));
     }
 
-    public Object getFindBySigla(String sigla) {
-        //Converte a sigla para maiúsculo
-        String siglaUpper = sigla.toUpperCase();
-        UF uf = ufRepository.findBySigla(siglaUpper).orElse(null);
-        if (uf == null) {
-            return new ArrayList<>(); //retorna uma lista vazia
-        }
-        return ufMapper.toDTO(uf);
-    }
 
-    public Object getFindByNome(String nome) {
-        //Converte o nome para maiúsculo
-        String nomeUpper = nome.toUpperCase();
-        UF uf = ufRepository.findByNome(nomeUpper).orElse(null);
-        if (uf == null) {
-            return new ArrayList<>(); //retorna um objeto vazio
-        }
-        return ufMapper.toDTO(uf);
-    }
+
+//    public Object getFindById(Long codigoUF) {
+//        UF uf = ufRepository.findById(codigoUF).orElse(null);
+//        //Se não encontrar a UF, retorna uma lista vazia
+//        if (uf == null) {
+//            return new ArrayList<>(); //retorna uma lista vazia
+//        }
+//        //Se encontrar a UF, retorna o objeto
+//        return ufMapper.toDTO(uf);
+//    }
+//
+//    public Object getFindBySigla(String sigla) {
+//        //Converte a sigla para maiúsculo
+//        String siglaUpper = sigla.toUpperCase();
+//        UF uf = ufRepository.findBySigla(siglaUpper).orElse(null);
+//        if (uf == null) {
+//            return new ArrayList<>(); //retorna uma lista vazia
+//        }
+//        return ufMapper.toDTO(uf);
+//    }
+//
+//    public Object getFindByNome(String nome) {
+//        //Converte o nome para maiúsculo
+//        String nomeUpper = nome.toUpperCase();
+//        UF uf = ufRepository.findByNome(nomeUpper).orElse(null);
+//        if (uf == null) {
+//            return new ArrayList<>(); //retorna um objeto vazio
+//        }
+//        return ufMapper.toDTO(uf);
+//    }
+public List<UFDTO> getAll(Long codigoUF, String nome, String sigla, Integer status) {
+    List<UF> ufs = ufRepository
+            .findAll()
+            .stream()
+            .filter(a -> (codigoUF == null || a.getCodigoUF().equals(codigoUF) )
+                    && (nome == null || a.getNome().equalsIgnoreCase(nome))
+                    && (sigla == null || a.getSigla().equalsIgnoreCase(sigla))
+                    && (status == null || a.getStatus() == status))
+            .collect(Collectors.toList());
+
+
+    return ufs.stream()
+            .map(ufMapper::toDTO)
+            .collect(Collectors
+                    .toList());
+}
 
     @Transactional
     public List<UFDTO> create(UFDTO ufDTO){
