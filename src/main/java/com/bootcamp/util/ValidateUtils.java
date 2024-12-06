@@ -1,5 +1,6 @@
 package com.bootcamp.util;
 
+import com.bootcamp.dto.EnderecoDTO;
 import com.bootcamp.dto.PessoaDTO;
 import com.bootcamp.exceptions.DesafioException;
 
@@ -12,8 +13,8 @@ public class ValidateUtils {
     }
 
     public static void validateSigla(String sigla) {
-        if (sigla == null || sigla.trim().isEmpty()) {
-            throw new DesafioException("Não foi possível realizar a operação no banco de dados. Motivo: (sigla) é obrigatório..");
+        if (sigla == null || sigla.trim().isEmpty() || sigla.length() != 2 || !sigla.matches("[a-zA-Z]+")) {
+            throw new DesafioException("Não foi possível realizar a operação no banco de dados. Motivo: (sigla) é obrigatório, deve ter exatamente 2 caracteres e deve ser texto.");
         }
     }
 
@@ -81,6 +82,16 @@ public class ValidateUtils {
     public static void validateComplemento (String complemento){
         if (complemento == null || complemento.trim().isEmpty()){
             throw new DesafioException("Não foi possível realizar a operação no banco de dados. Motivo: (complemento) é obrigatório.");
+        }
+    }
+
+    public static void validateEndereco(PessoaDTO pessoaDTO) {
+        for (EnderecoDTO endereco : pessoaDTO.getEnderecos()) {
+            validateNomeRua(endereco.getNomeRua());
+            validateNumero(endereco.getNumero());
+            validateCep(endereco.getCep());
+            validateComplemento(endereco.getComplemento());
+
         }
     }
 

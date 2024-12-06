@@ -75,6 +75,7 @@ public class PessoaService {
         ValidateUtils.validateSenha(pessoaDTO.getSenha());//Valida se a senha é nula ou vazia
         ValidateUtils.validateStatus(pessoaDTO.getStatus());//Valida se o status é nulo ou diferente de 1 ou 2
         ValidateUtils.validateEnderecosNotEmpty(pessoaDTO);//Valida se a lista de endereços é nula ou vazia
+        ValidateUtils.validateEndereco(pessoaDTO);//Valida se o endereço é nulo ou vazio
 
 
         pessoaDTO.setLogin(pessoaDTO.getLogin().trim());// Remove espaços do login
@@ -122,6 +123,7 @@ public class PessoaService {
     public List<PessoaDTO> updatePessoa(PessoaDTO pessoaDTO) {
         //Validações
         validatePessoa(pessoaDTO);
+
 
         //convertendo o DTO para entidade
         Pessoa pessoa = pessoaMapper.toEntity(pessoaDTO);
@@ -190,14 +192,8 @@ public class PessoaService {
         ValidateUtils.validateStatus(pessoaDTO.getStatus());//Valida se o status é nulo ou diferente de 1 ou 2
         ValidateUtils.validateEnderecosNotEmpty(pessoaDTO);//Valida se a lista de endereços é nula ou vazia
 
-//        Validações de endereço da pessoa (nomeRua, numero, cep, complemento)
-        for (EnderecoDTO endereco : pessoaDTO.getEnderecos()) {
-            ValidateUtils.validateNomeRua(endereco.getNomeRua());
-            ValidateUtils.validateNumero(endereco.getNumero());
-            ValidateUtils.validateCep(endereco.getCep());
-            ValidateUtils.validateComplemento(endereco.getComplemento());
-
-        }
+//     Validações de endereço da pessoa (nomeRua, numero, cep, complemento)
+       ValidateUtils.validateEndereco(pessoaDTO);
 
 
         //Valida se bairro existe
