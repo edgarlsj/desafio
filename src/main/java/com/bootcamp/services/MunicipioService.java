@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,15 +42,48 @@ public class MunicipioService {
 
     }
 
-    @Transactional
-    public Object getByCodigoMunicipio(Long codigoMunicipio) {
-        Municipio municipio = municipioRepository.findById(codigoMunicipio).orElse(null);
 
-        if (municipio == null) {
-            return new ArrayList<>();
+    public List<MunicipioDTO> findByFilters(Optional<Long> codigoMunicipio, Optional<Long> codigoUF, Optional<String> nome, Optional<Integer> status) {
+        List<Municipio> municipios = municipioRepository.findByFilters(codigoMunicipio, codigoUF, nome, status);
+
+        return municipios.stream()
+                .map(municipio -> new MunicipioDTO(
+                        municipio.getCodigoMunicipio(),
+                        municipio.getUf().getCodigoUF(),
+                        municipio.getNome(),
+                        municipio.getStatus()))
+                .sorted((o1, o2) -> -o1.getCodigoMunicipio().compareTo(o2.getCodigoMunicipio()))
+                .collect(Collectors.toList());
     }
-        return municipioMapper.toDTO(municipio);
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    @Transactional
+//    public Object getByCodigoMunicipio(Long codigoMunicipio) {
+//        Municipio municipio = municipioRepository.findById(codigoMunicipio).orElse(null);
+//
+//        if (municipio == null) {
+//            return new ArrayList<>();
+//    }
+//        return municipioMapper.toDTO(municipio);
+//    }
     @Transactional
     public List<MunicipioDTO> createMunicipio(MunicipioDTO municipioDTO) {
 //        Validações

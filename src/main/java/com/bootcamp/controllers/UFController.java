@@ -78,20 +78,28 @@ public class UFController {
 
     @GetMapping
     public ResponseEntity<Object> getAllUF(
-            @RequestParam(required = false) Long codigoUF,
+            @RequestParam(required = false) String codigoUF,
             @RequestParam(required = false) String sigla,
             @RequestParam(required = false) String nome,
             @RequestParam(required = false) Integer status
     ) {
 
         try {
+            Long codigoUFLong = null;
+            if (codigoUF != null) {
+                try {
+                    codigoUFLong = Long.parseLong(codigoUF);
+                } catch (NumberFormatException e) {
+                    return ResponseEntity.status(404).body(new ErrorResponseDesafio("Não foi possivel consultar UF no banco de dados. Motivo: o Valor do campo codigoUF precisa ser um numero . e você passou " + codigoUF + "", 404));
+                }
+            }
             if (status != null && codigoUF == null && sigla == null && nome == null) {
                 return ResponseEntity.status(HttpStatus.OK).body(ufService.findAll(status));
             }
             if (codigoUF == null && sigla == null && nome == null) {
                 return ResponseEntity.status(HttpStatus.OK).body(ufService.findAll());
             }
-            return ResponseEntity.status(HttpStatus.OK).body(ufService.findOne(codigoUF, sigla != null ? sigla.toUpperCase() : null, nome != null ? nome.toUpperCase() : null, status));
+            return ResponseEntity.status(HttpStatus.OK).body(ufService.findOne(ConverterUtil.convertStringToLong(codigoUF), sigla != null ? sigla.toUpperCase() : null, nome != null ? nome.toUpperCase() : null, status));
         } catch (DesafioException e) {
             return ResponseEntity.status(404).body(new ErrorResponseDesafio("Não foi possível consultar UF no banco de dados", 404));
         }

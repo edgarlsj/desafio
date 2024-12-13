@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,29 +40,59 @@ public class BairroService {
 
     }
 
-    @Transactional
-    //Metodo para buscar bairro por codigo
-    public Object getByCodigoBairro(Long codigoBairro) {
-        Bairro bairro = bairroRepository.findById(codigoBairro).orElse(null);
-        if (bairro == null) {
-            return new ArrayList<>();
-        }
-        return bairroMapper.toDto(bairro);
+    public List<BairroDTO> findFilters(Optional<Long> codigoBairro, Optional<Long> codigoMunicipio, Optional<String> nome, Optional<Integer> status) {
+        List<Bairro> bairros = bairroRepository.findByFilters(codigoBairro, codigoMunicipio, nome, status);
+
+        return bairros.stream()
+                .map(bairro -> new BairroDTO(
+                        bairro.getCodigoBairro(),
+                        bairro.getMunicipio().getCodigoMunicipio(),
+                        bairro.getNome(),
+                        bairro.getStatus()))
+                .sorted((o1, o2) -> -o1.getCodigoBairro().compareTo(o2.getCodigoBairro()))
+                .collect(Collectors.toList());
     }
 
-   @Transactional
-    //Metodo para buscar bairro por codigo do municipio
-    public Object getByCodigoMunicipio(Long codigoMunicipio) {
-        List<Bairro> bairros = bairroRepository.findAll().stream()
-                .filter(b -> b.getMunicipio().getCodigoMunicipio().equals(codigoMunicipio))
-                .collect(Collectors.toList());
-        if (bairros.isEmpty()) {
-            return new ArrayList<>();
-        }
-        return bairros.stream()
-                .map(bairroMapper::toDto)
-                .collect(Collectors.toList());
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    @Transactional
+//    //Metodo para buscar bairro por codigo
+//    public Object getByCodigoBairro(Long codigoBairro) {
+//        Bairro bairro = bairroRepository.findById(codigoBairro).orElse(null);
+//        if (bairro == null) {
+//            return new ArrayList<>();
+//        }
+//        return bairroMapper.toDto(bairro);
+//    }
+//
+//   @Transactional
+//    //Metodo para buscar bairro por codigo do municipio
+//    public Object getByCodigoMunicipio(Long codigoMunicipio) {
+//        List<Bairro> bairros = bairroRepository.findAll().stream()
+//                .filter(b -> b.getMunicipio().getCodigoMunicipio().equals(codigoMunicipio))
+//                .collect(Collectors.toList());
+//        if (bairros.isEmpty()) {
+//            return new ArrayList<>();
+//        }
+//        return bairros.stream()
+//                .map(bairroMapper::toDto)
+//                .collect(Collectors.toList());
+//    }
 
     @Transactional
     public List<BairroDTO> createBairro(BairroDTO bairroDTO) {

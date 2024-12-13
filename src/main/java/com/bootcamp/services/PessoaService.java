@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,6 +36,12 @@ public class PessoaService {
 
     @Autowired
     private EnderecoRepository enderecoRepository;
+
+
+    private PessoaDTO toDTO(Pessoa pessoa){
+        return pessoaMapper.toDTO(pessoa, false);
+
+    }
 
 
     public List<PessoaDTO> getAll(Long codigoPessoa, String nome, String sobrenome, Integer idade, String login, String senha, Integer status) {
@@ -57,12 +64,20 @@ public class PessoaService {
                         .toList());
     }
 
-    public Object getFindById(Long codigoPessoa) {
+    public PessoaDTO getFindById(Long codigoPessoa) {
         Pessoa pessoa = pessoaRepository.findById(codigoPessoa).orElse(null);
         if (pessoa == null) {
-            return new ArrayList<>();//
+            throw new DesafioException(" Não foi possível encontrar pessoa no banco de dados. Motivo: Pessoa não encontrada!");
         }
         return pessoaMapper.toDTO(pessoa, true);//true para trazer os endereços
+    }
+
+
+    public List<PessoaDTO> findByFilters(Optional<Long> codigoPessoa, Optional<String> login, Optional<Integer> status) {
+        return pessoaRepository.findByFilters(codigoPessoa, login, status).stream()
+                .map(this::toDTO)
+                .sorted((o1, o2) -> -o1.getCodigoPessoa().compareTo(o2.getCodigoPessoa()))
+                .collect(Collectors.toList());
     }
 
     @Transactional
