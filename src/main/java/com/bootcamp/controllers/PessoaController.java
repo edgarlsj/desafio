@@ -71,6 +71,9 @@ public class PessoaController {
             if (codigoPessoaLong != null && login == null && statusInt == null) {
                 PessoaDTO pessoa = pessoaService.getFindById(codigoPessoaLong);
                 List<PessoaDTO> pessoaDTOS = new ArrayList<>();
+                if (pessoa == null){
+                    return ResponseEntity.ok(pessoaDTOS);
+                }
                 if (pessoa != null) {
                     pessoaDTOS.add(pessoa);
                     return ResponseEntity.ok(pessoaDTOS.get(0));

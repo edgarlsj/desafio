@@ -67,7 +67,7 @@ public class PessoaService {
     public PessoaDTO getFindById(Long codigoPessoa) {
         Pessoa pessoa = pessoaRepository.findById(codigoPessoa).orElse(null);
         if (pessoa == null) {
-            throw new DesafioException(" Não foi possível encontrar pessoa no banco de dados. Motivo: Pessoa não encontrada!");
+            return null;
         }
         return pessoaMapper.toDTO(pessoa, true);//true para trazer os endereços
     }
