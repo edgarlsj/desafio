@@ -178,7 +178,7 @@ public class PessoaService {
             } else {
                 // Atualiza endereço existente
                 for (Endereco enderecoExistente : enderecosExistentes) {
-                    if (enderecoExistente.getCodigoEndereco().equals(enderecoAtualizado.getCodigoEndereco())) {
+                    if (enderecoAtualizado.getCodigoEndereco() != null && enderecoAtualizado.getCodigoEndereco().equals(enderecoExistente.getCodigoEndereco())) {
                         enderecoExistente.setNomeRua(enderecoAtualizado.getNomeRua());
                         enderecoExistente.setNumero(enderecoAtualizado.getNumero());
                         enderecoExistente.setComplemento(enderecoAtualizado.getComplemento());
