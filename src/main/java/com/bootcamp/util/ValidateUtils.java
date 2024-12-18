@@ -85,12 +85,19 @@ public class ValidateUtils {
         }
     }
 
+    public static void validateCodigoPessoa(Long codigoPessoa) {
+        if (codigoPessoa == null) {
+            throw new DesafioException("Não foi possível realizar a operação no banco de dados. Motivo: (codigoPessoa) é obrigatório.");
+        }
+    }
+
     public static void validateEndereco(PessoaDTO pessoaDTO) {
         for (EnderecoDTO endereco : pessoaDTO.getEnderecos()) {
             validateNomeRua(endereco.getNomeRua());
             validateNumero(endereco.getNumero());
             validateCep(endereco.getCep());
             validateComplemento(endereco.getComplemento());
+            validateCodigoPessoa(endereco.getCodigoPessoa());
 
         }
     }
