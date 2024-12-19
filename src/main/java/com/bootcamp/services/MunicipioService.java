@@ -125,6 +125,13 @@ public class MunicipioService {
             throw new DesafioException("Não foi possível atualizar municipio no banco de dados. Motivo: código do UF "+municipioDTO.getCodigoUF()+" não foi encontrado!.");
         }
 
+        // Verifica se já existe um município com o mesmo nome e UF
+        Municipio existeMunicipio = municipioRepository.findByNomeAndUf_CodigoUF(municipioDTO.getNome(), municipioDTO.getCodigoUF());
+
+        if (existeMunicipio != null && !existeMunicipio.getCodigoMunicipio().equals(municipioDTO.getCodigoMunicipio()) /*&& existeMunicipio.getStatus() == municipioDTO.getStatus()*/) {
+            throw new DesafioException("Não foi possível atualizar municipio no banco de dados. Motivo: município com nome " + municipioDTO.getNome() + " e código da UF " + municipioDTO.getCodigoUF() + " já existe.");
+        }
+
 
 
         Municipio municipio = municipioMapper.toEntity(municipioDTO);

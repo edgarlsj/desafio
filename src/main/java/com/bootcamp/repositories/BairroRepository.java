@@ -27,7 +27,7 @@ public interface BairroRepository extends JpaRepository<Bairro, Long> {
                                @Param("status") Optional<Integer> status);
 
 
-
+    Bairro findFirstByNomeAndMunicipio_CodigoMunicipio(String nome, Long codigoMunicipio);
 
 
 }

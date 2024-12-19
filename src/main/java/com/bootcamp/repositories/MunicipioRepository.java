@@ -29,4 +29,7 @@ public interface MunicipioRepository extends JpaRepository<Municipio, Long> {
                                   @Param("status") Optional<Integer> status);
 
 
+    Municipio  findByNomeAndUf_CodigoUF (String nome, Long codigoUF);//cria um método que verifica se existe um município com o nome e código da UF informados
+
+
 }

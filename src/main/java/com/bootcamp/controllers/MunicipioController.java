@@ -104,6 +104,11 @@ public class MunicipioController {
             e.printStackTrace();
             return ResponseEntity.status(404).body(new ErrorResponseDesafio(e.getMessage(), 404));
         }
+
+        catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(404).body(new ErrorResponseDesafio("Não foi possivel atualizar municipio no banco de dados", 404));
+        }
     }
 }
 

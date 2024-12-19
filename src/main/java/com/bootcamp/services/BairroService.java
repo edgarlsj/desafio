@@ -135,6 +135,15 @@ public class BairroService {
         }
 
 
+        // Valida se já existe um registro com o mesmo nome e município
+        Bairro existeBairro = bairroRepository.findFirstByNomeAndMunicipio_CodigoMunicipio(bairroDTO.getNome(), bairroDTO.getCodigoMunicipio());
+        if (existeBairro != null && !existeBairro.getCodigoBairro().equals(bairroDTO.getCodigoBairro())) {
+            throw new DesafioException("Não foi possível atualizar bairro no banco de dados. Motivo: bairro com nome " + bairroDTO.getNome() + " e código do município " + bairroDTO.getCodigoMunicipio() + " já existe.");
+        }
+
+
+
+
 
 
         Bairro bairro = bairroMapper.toEntity(bairroDTO);
