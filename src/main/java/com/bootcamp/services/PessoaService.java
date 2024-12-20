@@ -223,6 +223,14 @@ public class PessoaService {
             throw new DesafioException("Não foi possível alterar pessoa no banco de dados. Motivo: já existe um(a) registro com o login: " + pessoaDTO.getLogin() + " com o codigoPessoa: " + pessoaExistenteLogin.getCodigoPessoa() + " no banco de dados");
         }
 
+        //valida se o codigoEndereco pertence a outra pessoa
+
+        for (EnderecoDTO endereco : pessoaDTO.getEnderecos()) {
+            if (enderecoRepository.existsByCodigoEnderecoAndPessoa_PessoaNot(endereco.getCodigoEndereco(), pessoaDTO.getCodigoPessoa())) {
+                throw new DesafioException("Não foi possível alterar endereço no banco de dados. Motivo: (codigoEndereco) já pertence a outra pessoa!");
+            }
+        }
+
 
         //Valida se bairro existe
         for (EnderecoDTO endereco : pessoaDTO.getEnderecos()) {
