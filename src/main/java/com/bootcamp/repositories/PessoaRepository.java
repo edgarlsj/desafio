@@ -26,6 +26,10 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
 
     Pessoa findByCodigoPessoa(Long codigoPessoa);
 
+    Pessoa findByNomeAndCodigoPessoaNot(String nome, Long codigoPessoa);
+
+    Pessoa findByLoginAndCodigoPessoaNot(String login, Long codigoPessoa);
+
 
 
 

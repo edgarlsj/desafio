@@ -91,13 +91,15 @@ public class ValidateUtils {
         }
     }
 
-    public static void validateEndereco(PessoaDTO pessoaDTO) {
+    public static void validateEndereco(PessoaDTO pessoaDTO, Boolean codigoPessoaObrigatorio) {
         for (EnderecoDTO endereco : pessoaDTO.getEnderecos()) {
             validateNomeRua(endereco.getNomeRua());
             validateNumero(endereco.getNumero());
             validateCep(endereco.getCep());
             validateComplemento(endereco.getComplemento());
-            validateCodigoPessoa(endereco.getCodigoPessoa());
+            if (codigoPessoaObrigatorio){
+                validateCodigoPessoa(endereco.getCodigoPessoa());
+            }
 
         }
     }

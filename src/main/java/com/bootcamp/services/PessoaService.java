@@ -90,7 +90,7 @@ public class PessoaService {
         ValidateUtils.validateSenha(pessoaDTO.getSenha());//Valida se a senha é nula ou vazia
         ValidateUtils.validateStatus(pessoaDTO.getStatus());//Valida se o status é nulo ou diferente de 1 ou 2
         ValidateUtils.validateEnderecosNotEmpty(pessoaDTO);//Valida se a lista de endereços é nula ou vazia
-        ValidateUtils.validateEndereco(pessoaDTO);//Valida se o endereço é nulo ou vazio
+        ValidateUtils.validateEndereco(pessoaDTO,false);//Valida se o endereço é nulo ou vazio
 
 
         pessoaDTO.setLogin(pessoaDTO.getLogin().trim());// Remove espaços do login
@@ -208,7 +208,20 @@ public class PessoaService {
         ValidateUtils.validateEnderecosNotEmpty(pessoaDTO);//Valida se a lista de endereços é nula ou vazia
 
 //     Validações de endereço da pessoa (nomeRua, numero, cep, complemento)
-       ValidateUtils.validateEndereco(pessoaDTO);
+       ValidateUtils.validateEndereco(pessoaDTO, true);
+
+
+       //valida se ja existe o nome da pessoa no banco de dados em outro registro
+        Pessoa pessoaExistente = pessoaRepository.findByNomeAndCodigoPessoaNot(pessoaDTO.getNome(), pessoaDTO.getCodigoPessoa());
+        if (pessoaExistente != null && pessoaExistente.getNome().equals(pessoaDTO.getNome())) {
+            throw new DesafioException("Não foi possível alterar pessoa no banco de dados. Motivo: já existe um(a) registro com o nome: " + pessoaDTO.getNome() + " com o codigoPessoa: "+ pessoaExistente.getCodigoPessoa()+ " no banco de dados");
+        }
+
+        // Valida se já existe o login da pessoa no banco de dados em outro registro
+        Pessoa pessoaExistenteLogin = pessoaRepository.findByLoginAndCodigoPessoaNot(pessoaDTO.getLogin(), pessoaDTO.getCodigoPessoa());
+        if (pessoaExistenteLogin != null && pessoaExistenteLogin.getLogin().equals(pessoaDTO.getLogin())) {
+            throw new DesafioException("Não foi possível alterar pessoa no banco de dados. Motivo: já existe um(a) registro com o login: " + pessoaDTO.getLogin() + " com o codigoPessoa: " + pessoaExistenteLogin.getCodigoPessoa() + " no banco de dados");
+        }
 
 
         //Valida se bairro existe
